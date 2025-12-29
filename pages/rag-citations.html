@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG with Citations | SLM Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand"><h2>SLM Command Center</h2></div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a class="nav-item" data-module="dashboard"><span class="nav-item-icon">📊</span><span>Dashboard</span></a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Capabilities</div>
+                    <a class="nav-item" data-module="cost-ticker"><span class="nav-item-icon">💰</span><span>Live Cost Ticker</span></a>
+                    <a class="nav-item active" data-module="rag-citations"><span class="nav-item-icon">📄</span><span>RAG with Citations</span></a>
+                    <a class="nav-item" data-module="guardrails"><span class="nav-item-icon">🛡️</span><span>Guardrails Control</span></a>
+                    <a class="nav-item" data-module="model-arena"><span class="nav-item-icon">⚔️</span><span>Model Arena</span></a>
+                    <a class="nav-item" data-module="fine-tuning"><span class="nav-item-icon">🎯</span><span>Fine-Tuning Preview</span></a>
+                    <a class="nav-item" data-module="infra-recommender"><span class="nav-item-icon">🔧</span><span>Infra Recommender</span></a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">RAG with Traceable Citations</h1>
+                    <div class="breadcrumb">
+                        <span>Capabilities</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Document Q&A</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="current-datetime" class="text-muted text-sm"></span>
+                    <img src="../assets/shellkode.png" alt="ShellKode" class="header-logo">
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <!-- Sample Queries -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-muted text-sm mr-2">Try asking:</span>
+                            <button class="btn btn-sm btn-outline sample-query-btn" data-query="What is our remote work policy?">Remote work policy</button>
+                            <button class="btn btn-sm btn-outline sample-query-btn" data-query="How much PTO do I get?">PTO policy</button>
+                            <button class="btn btn-sm btn-outline sample-query-btn" data-query="What are the password requirements?">Security requirements</button>
+                            <button class="btn btn-sm btn-outline sample-query-btn" data-query="What are the API rate limits?">API rate limits</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rag-container">
+                    <!-- Chat Panel -->
+                    <div class="chat-panel">
+                        <div class="card-header">
+                            <h4 class="card-title">💬 Document Q&A</h4>
+                            <button class="btn btn-sm btn-outline" onclick="RAGCitations.exportAuditLog()">
+                                📥 Export Audit Log
+                            </button>
+                        </div>
+                        <div class="chat-messages" id="rag-messages">
+                            <!-- Messages will be rendered here -->
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="rag-input" class="chat-input" placeholder="Ask a question about your documents...">
+                            <button id="rag-send-btn" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Sources Panel -->
+                    <div class="sources-panel">
+                        <div class="sources-header">
+                            <span>📚</span>
+                            <span>Sources & Citations</span>
+                        </div>
+                        <div class="sources-list" id="sources-list">
+                            <div class="text-center p-4 text-muted">
+                                <p>Ask a question to see source citations</p>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 1rem; border-top: 1px solid var(--color-border);">
+                            <h5 class="text-sm font-semibold mb-3">📂 Available Documents</h5>
+                            <div id="documents-list">
+                                <!-- Documents will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script src="../js/rag-citations.js"></script>
+</body>
+</html>

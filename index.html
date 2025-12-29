@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLM Command Center | ShellKode</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <h2>SLM Command Center</h2>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a class="nav-item active" data-module="dashboard">
+                        <span class="nav-item-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Capabilities</div>
+                    <a class="nav-item" data-module="cost-ticker">
+                        <span class="nav-item-icon">💰</span>
+                        <span>Live Cost Ticker</span>
+                        <span class="nav-item-badge">Live</span>
+                    </a>
+                    <a class="nav-item" data-module="rag-citations">
+                        <span class="nav-item-icon">📄</span>
+                        <span>RAG with Citations</span>
+                    </a>
+                    <a class="nav-item" data-module="guardrails">
+                        <span class="nav-item-icon">🛡️</span>
+                        <span>Guardrails Control</span>
+                    </a>
+                    <a class="nav-item" data-module="model-arena">
+                        <span class="nav-item-icon">⚔️</span>
+                        <span>Model Arena</span>
+                    </a>
+                    <a class="nav-item" data-module="fine-tuning">
+                        <span class="nav-item-icon">🎯</span>
+                        <span>Fine-Tuning Preview</span>
+                    </a>
+                    <a class="nav-item" data-module="infra-recommender">
+                        <span class="nav-item-icon">🔧</span>
+                        <span>Infra Recommender</span>
+                        <span class="nav-item-badge">New</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Resources</div>
+                    <a class="nav-item" href="#" onclick="Toast.info('Documentation coming soon')">
+                        <span class="nav-item-icon">📚</span>
+                        <span>Documentation</span>
+                    </a>
+                    <a class="nav-item" href="#" onclick="Toast.info('Contact sales@shellkode.com')">
+                        <span class="nav-item-icon">💬</span>
+                        <span>Contact Sales</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">Dashboard</h1>
+                    <div class="breadcrumb">
+                        <span>Home</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Overview</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="current-datetime" class="text-muted text-sm"></span>
+                    <img src="assets/shellkode.png" alt="ShellKode" class="header-logo">
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Stats Overview -->
+                <div class="dashboard-stats" data-animate>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Cost Savings</div>
+                            <div class="stat-value">3-23x</div>
+                            <div class="stat-change positive">↑ vs GPT-4/Claude</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">⚡</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Avg Latency</div>
+                            <div class="stat-value">&lt;100ms</div>
+                            <div class="stat-change positive">Production Ready</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">🔒</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Data Sovereignty</div>
+                            <div class="stat-value">100%</div>
+                            <div class="stat-change positive">Your VPC</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">📈</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Customization</div>
+                            <div class="stat-value">+24%</div>
+                            <div class="stat-change positive">With Fine-tuning</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Module Cards -->
+                <h2 class="mb-4" data-animate>Explore Capabilities</h2>
+                <div class="module-grid" data-animate>
+                    <div class="module-card" data-module="cost-ticker">
+                        <span class="module-badge badge badge-success">Live Demo</span>
+                        <div class="module-icon">💰</div>
+                        <h3 class="module-title">Live Cost Ticker</h3>
+                        <p class="module-description">
+                            Real-time split-screen comparison showing GPT-4 API costs vs self-hosted SLM. 
+                            Watch the savings accumulate with every query.
+                        </p>
+                    </div>
+                    
+                    <div class="module-card" data-module="rag-citations">
+                        <div class="module-icon">📄</div>
+                        <h3 class="module-title">RAG with Citations</h3>
+                        <p class="module-description">
+                            Document Q&A with clickable source citations. Every answer links back to 
+                            exact document, page, and paragraph for complete auditability.
+                        </p>
+                    </div>
+                    
+                    <div class="module-card" data-module="guardrails">
+                        <div class="module-icon">🛡️</div>
+                        <h3 class="module-title">Guardrails Control Panel</h3>
+                        <p class="module-description">
+                            Toggle content filters in real-time. Competitor blocking, compliance disclaimers, 
+                            PII detection—see guardrails in action.
+                        </p>
+                    </div>
+                    
+                    <div class="module-card" data-module="model-arena">
+                        <div class="module-icon">⚔️</div>
+                        <h3 class="module-title">Model Comparison Arena</h3>
+                        <p class="module-description">
+                            Side-by-side comparison of Mistral 7B, Phi-3, and Llama 3.2. Compare latency, 
+                            quality, and cost across quantization levels.
+                        </p>
+                    </div>
+                    
+                    <div class="module-card" data-module="fine-tuning">
+                        <div class="module-icon">🎯</div>
+                        <h3 class="module-title">Fine-Tuning Impact Preview</h3>
+                        <p class="module-description">
+                            Before/after comparison showing base model vs domain-adapted model. 
+                            See accuracy jump from 67% to 91% on your terminology.
+                        </p>
+                    </div>
+                    
+                    <div class="module-card" data-module="infra-recommender">
+                        <span class="module-badge badge badge-primary">New</span>
+                        <div class="module-icon">🔧</div>
+                        <h3 class="module-title">Infrastructure Recommender</h3>
+                        <p class="module-description">
+                            Input your requirements, get instant Model + GPU + Platform recommendations 
+                            with projected costs. End-to-end automation.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Value Proposition -->
+                <div class="card mt-4" data-animate>
+                    <div class="card-header">
+                        <h3 class="card-title">🎯 Why ShellKode SLM Services?</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center p-4">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">69%</div>
+                                <div class="text-muted text-sm">of enterprises cite AI data leaks as top security concern</div>
+                            </div>
+                            <div class="text-center p-4">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">85%</div>
+                                <div class="text-muted text-sm">of ML projects fail to reach production deployment</div>
+                            </div>
+                            <div class="text-center p-4">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">$64B</div>
+                                <div class="text-muted text-sm">projected SLM market size by 2034 (25.7% CAGR)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <p class="text-muted mb-3">We help enterprises deploy production-ready SLM solutions with complete data sovereignty.</p>
+                        <button class="btn btn-primary" onclick="Toast.info('Contact sales@shellkode.com for a personalized demo')">
+                            Schedule a Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>

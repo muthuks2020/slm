@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cost Ticker | SLM Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <h2>SLM Command Center</h2>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a class="nav-item" data-module="dashboard">
+                        <span class="nav-item-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Capabilities</div>
+                    <a class="nav-item active" data-module="cost-ticker">
+                        <span class="nav-item-icon">💰</span>
+                        <span>Live Cost Ticker</span>
+                        <span class="nav-item-badge">Live</span>
+                    </a>
+                    <a class="nav-item" data-module="rag-citations">
+                        <span class="nav-item-icon">📄</span>
+                        <span>RAG with Citations</span>
+                    </a>
+                    <a class="nav-item" data-module="guardrails">
+                        <span class="nav-item-icon">🛡️</span>
+                        <span>Guardrails Control</span>
+                    </a>
+                    <a class="nav-item" data-module="model-arena">
+                        <span class="nav-item-icon">⚔️</span>
+                        <span>Model Arena</span>
+                    </a>
+                    <a class="nav-item" data-module="fine-tuning">
+                        <span class="nav-item-icon">🎯</span>
+                        <span>Fine-Tuning Preview</span>
+                    </a>
+                    <a class="nav-item" data-module="infra-recommender">
+                        <span class="nav-item-icon">🔧</span>
+                        <span>Infra Recommender</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">Live Cost Ticker</h1>
+                    <div class="breadcrumb">
+                        <span>Capabilities</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Cost Comparison</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="current-datetime" class="text-muted text-sm"></span>
+                    <img src="../assets/shellkode.png" alt="ShellKode" class="header-logo">
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <!-- Query Input -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="flex gap-3 items-center">
+                            <input type="text" id="query-input" class="form-input" 
+                                   placeholder="Enter a query to compare costs (e.g., 'What are the benefits of SLMs?')"
+                                   value="What are the key benefits of using Small Language Models for enterprise applications?">
+                            <button id="run-comparison-btn" class="btn btn-primary">
+                                ▶️ Run Comparison
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cost Comparison Panels -->
+                <div class="cost-comparison-container">
+                    <!-- GPT-4 Panel -->
+                    <div class="model-panel gpt">
+                        <div class="model-panel-header">
+                            <span class="model-name">GPT-4 API</span>
+                            <span class="model-badge">OpenAI</span>
+                        </div>
+                        <div class="cost-display">
+                            <div class="cost-value" id="gpt-cost">$0.0000</div>
+                            <div class="cost-label">Cost This Query</div>
+                        </div>
+                        <div class="response-area">
+                            <div class="response-text" id="gpt-response">
+                                <span class="text-muted">Response will appear here...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SLM Panel -->
+                    <div class="model-panel slm">
+                        <div class="model-panel-header">
+                            <span class="model-name">Mistral 7B (Self-hosted)</span>
+                            <span class="model-badge">g5.2xlarge</span>
+                        </div>
+                        <div class="cost-display">
+                            <div class="cost-value" id="slm-cost">$0.000000</div>
+                            <div class="cost-label">Cost This Query</div>
+                        </div>
+                        <div class="response-area">
+                            <div class="response-text" id="slm-response">
+                                <span class="text-muted">Response will appear here...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Volume Calculator -->
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="volume-control card">
+                        <div class="card-header">
+                            <h4 class="card-title">📊 Daily Query Volume</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-muted">Queries per day:</span>
+                                <span class="font-bold" id="volume-display">10K</span>
+                            </div>
+                            <input type="range" id="volume-slider" class="volume-slider" 
+                                   min="1000" max="1000000" value="10000" step="1000">
+                            <div class="flex justify-between text-xs text-muted mt-2">
+                                <span>1K</span>
+                                <span>100K</span>
+                                <span>1M</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="savings-calculator">
+                        <div class="savings-title">💰 Monthly Savings</div>
+                        <div class="savings-value" id="monthly-savings">$0</div>
+                        <div class="savings-period">
+                            <span id="savings-percent">0%</span> cost reduction vs GPT-4
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Monthly Projections -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4 class="card-title">📈 Monthly Cost Projection</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center p-4" style="background: rgba(239,68,68,0.1); border-radius: 8px;">
+                                <div class="text-muted text-sm mb-2">GPT-4 API</div>
+                                <div class="text-xl font-bold text-danger" id="gpt-monthly-cost">$0</div>
+                                <div class="text-xs text-muted">per month</div>
+                            </div>
+                            <div class="text-center p-4" style="background: rgba(16,185,129,0.1); border-radius: 8px;">
+                                <div class="text-muted text-sm mb-2">Self-hosted SLM</div>
+                                <div class="text-xl font-bold text-success" id="slm-monthly-cost">$0</div>
+                                <div class="text-xs text-muted">per month (incl. infra)</div>
+                            </div>
+                            <div class="text-center p-4" style="background: rgba(77,170,232,0.1); border-radius: 8px;">
+                                <div class="text-muted text-sm mb-2">Annual Savings</div>
+                                <div class="text-xl font-bold text-primary" id="annual-savings">$0</div>
+                                <div class="text-xs text-muted">per year</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script src="../js/cost-ticker.js"></script>
+</body>
+</html>

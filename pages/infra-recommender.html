@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructure Recommender | SLM Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand"><h2>SLM Command Center</h2></div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a class="nav-item" data-module="dashboard"><span class="nav-item-icon">📊</span><span>Dashboard</span></a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Capabilities</div>
+                    <a class="nav-item" data-module="cost-ticker"><span class="nav-item-icon">💰</span><span>Live Cost Ticker</span></a>
+                    <a class="nav-item" data-module="rag-citations"><span class="nav-item-icon">📄</span><span>RAG with Citations</span></a>
+                    <a class="nav-item" data-module="guardrails"><span class="nav-item-icon">🛡️</span><span>Guardrails Control</span></a>
+                    <a class="nav-item" data-module="model-arena"><span class="nav-item-icon">⚔️</span><span>Model Arena</span></a>
+                    <a class="nav-item" data-module="fine-tuning"><span class="nav-item-icon">🎯</span><span>Fine-Tuning Preview</span></a>
+                    <a class="nav-item active" data-module="infra-recommender"><span class="nav-item-icon">🔧</span><span>Infra Recommender</span><span class="nav-item-badge">New</span></a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">Infrastructure Recommender</h1>
+                    <div class="breadcrumb">
+                        <span>Capabilities</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Smart Configuration</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <img src="../assets/shellkode.png" alt="ShellKode" class="header-logo">
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <div class="infra-container">
+                    <!-- Input Form -->
+                    <div class="infra-form">
+                        <div class="card-header" style="padding: 0 0 1rem 0; border: none;">
+                            <h4 class="card-title">📝 Your Requirements</h4>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mb-4">
+                            <div class="flex justify-between text-xs text-muted mb-1">
+                                <span>Completion</span>
+                                <span>Fill all fields</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" id="form-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Industry -->
+                        <div class="form-section">
+                            <div class="form-section-title">Industry</div>
+                            <div class="option-grid" id="industry-options">
+                                <!-- Options will be rendered by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Use Case -->
+                        <div class="form-section">
+                            <div class="form-section-title">Primary Use Case</div>
+                            <div class="option-grid" id="useCase-options">
+                                <!-- Options will be rendered by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Volume -->
+                        <div class="form-section">
+                            <div class="form-section-title">Expected Query Volume</div>
+                            <div class="option-grid" id="volume-options">
+                                <!-- Options will be rendered by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Latency -->
+                        <div class="form-section">
+                            <div class="form-section-title">Latency Requirements</div>
+                            <div class="option-grid" id="latency-options">
+                                <!-- Options will be rendered by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Compliance -->
+                        <div class="form-section">
+                            <div class="form-section-title">Compliance Requirements</div>
+                            <div class="option-grid" id="compliance-options">
+                                <!-- Options will be rendered by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Budget -->
+                        <div class="form-section">
+                            <div class="form-section-title">Monthly Budget</div>
+                            <div class="option-grid" id="budget-options">
+                                <!-- Options will be rendered by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="flex gap-3 mt-4">
+                            <button id="generate-recommendation" class="btn btn-primary w-full" disabled style="opacity: 0.5;">
+                                🎯 Generate Recommendation
+                            </button>
+                            <button id="reset-form" class="btn btn-outline">
+                                🔄 Reset
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommendation Result -->
+                    <div id="recommendation-result">
+                        <div style="text-align: center; padding: 3rem; color: var(--color-text-light);">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
+                            <h3 style="color: var(--color-dark); margin-bottom: 0.5rem;">Intelligent Infrastructure Recommender</h3>
+                            <p>Complete the form to get your personalized Model + GPU + Platform recommendation</p>
+                            <div class="mt-4 p-4" style="background: rgba(77,170,232,0.1); border-radius: 8px; text-align: left;">
+                                <h5 class="text-primary mb-2">What you'll get:</h5>
+                                <ul style="font-size: 0.9rem; margin: 0; padding-left: 1.5rem;">
+                                    <li>Optimal model selection for your use case</li>
+                                    <li>GPU instance recommendation with costs</li>
+                                    <li>Deployment platform guidance</li>
+                                    <li>Estimated monthly costs & savings vs GPT-4</li>
+                                    <li>Exportable configuration file</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script src="../js/infra-recommender.js"></script>
+</body>
+</html>

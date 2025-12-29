@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Arena | SLM Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand"><h2>SLM Command Center</h2></div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <a class="nav-item" data-module="dashboard"><span class="nav-item-icon">📊</span><span>Dashboard</span></a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Capabilities</div>
+                    <a class="nav-item" data-module="cost-ticker"><span class="nav-item-icon">💰</span><span>Live Cost Ticker</span></a>
+                    <a class="nav-item" data-module="rag-citations"><span class="nav-item-icon">📄</span><span>RAG with Citations</span></a>
+                    <a class="nav-item" data-module="guardrails"><span class="nav-item-icon">🛡️</span><span>Guardrails Control</span></a>
+                    <a class="nav-item active" data-module="model-arena"><span class="nav-item-icon">⚔️</span><span>Model Arena</span></a>
+                    <a class="nav-item" data-module="fine-tuning"><span class="nav-item-icon">🎯</span><span>Fine-Tuning Preview</span></a>
+                    <a class="nav-item" data-module="infra-recommender"><span class="nav-item-icon">🔧</span><span>Infra Recommender</span></a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">Model Comparison Arena</h1>
+                    <div class="breadcrumb">
+                        <span>Capabilities</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span>Model Comparison</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <img src="../assets/shellkode.png" alt="ShellKode" class="header-logo">
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <div class="arena-container">
+                    <!-- Query Section -->
+                    <div class="arena-query-section">
+                        <div class="flex gap-4 items-center mb-4">
+                            <div class="flex-1">
+                                <input type="text" id="arena-query" class="form-input" 
+                                       placeholder="Enter a prompt to compare models..."
+                                       value="What are the benefits of using Small Language Models for enterprise?">
+                            </div>
+                            <button id="run-arena-btn" class="btn btn-primary">⚔️ Run Comparison</button>
+                        </div>
+                        
+                        <div class="flex gap-2 flex-wrap mb-4">
+                            <span class="text-muted text-sm">Try:</span>
+                            <button class="btn btn-sm btn-outline sample-arena-query" data-query="Write a Python function to connect to a vLLM endpoint">Code task</button>
+                            <button class="btn btn-sm btn-outline sample-arena-query" data-query="Summarize the key differences between REST and GraphQL APIs">Summarization</button>
+                            <button class="btn btn-sm btn-outline sample-arena-query" data-query="What are the HIPAA requirements for storing patient data?">Domain knowledge</button>
+                        </div>
+                        
+                        <div class="flex gap-4 items-center">
+                            <div>
+                                <span class="text-sm text-muted mr-2">Models:</span>
+                                <div id="model-selector" class="flex gap-2 flex-wrap" style="display: inline-flex;">
+                                    <!-- Model checkboxes will be rendered here -->
+                                </div>
+                            </div>
+                            <div class="ml-auto">
+                                <span class="text-sm text-muted mr-2">Quantization:</span>
+                                <div class="quant-toggle">
+                                    <button class="quant-option active" data-quant="FP16">FP16</button>
+                                    <button class="quant-option" data-quant="INT8">INT8</button>
+                                    <button class="quant-option" data-quant="INT4">INT4</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Model Comparison Grid -->
+                    <div class="model-comparison-grid" id="arena-grid">
+                        <!-- Model cards will be rendered here -->
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="flex gap-4 justify-center text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span style="width: 12px; height: 12px; background: var(--color-success); border-radius: 2px;"></span>
+                                    <span class="text-muted">Winner (Best composite score)</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-muted">Metrics: Latency (ms) • Throughput (tok/s) • Cost per 1K tokens • Quality (1-10)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script src="../js/model-arena.js"></script>
+</body>
+</html>
