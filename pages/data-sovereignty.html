@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sovereignty | SLM Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../assets/shellkode.png" alt="ShellKode" class="logo-img">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item" data-module="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-module="cost-ticker">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Cost Ticker</span>
+                    <span class="nav-badge">Live</span>
+                </a>
+                <a href="#" class="nav-item" data-module="rag-citations">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-label">RAG Citations</span>
+                </a>
+                <a href="#" class="nav-item" data-module="guardrails">
+                    <span class="nav-icon">🛡️</span>
+                    <span class="nav-label">Guardrails</span>
+                </a>
+                <a href="#" class="nav-item" data-module="model-arena">
+                    <span class="nav-icon">⚔️</span>
+                    <span class="nav-label">Model Arena</span>
+                </a>
+                <a href="#" class="nav-item" data-module="model-lab">
+                    <span class="nav-icon">🧪</span>
+                    <span class="nav-label">Model Dev Lab</span><span class="nav-badge">Core</span>
+                </a>
+                <a href="#" class="nav-item" data-module="infra-recommender">
+                    <span class="nav-icon">🏗️</span>
+                    <span class="nav-label">Infrastructure</span>
+                </a>
+                <a href="#" class="nav-item active" data-module="data-sovereignty">
+                    <span class="nav-icon">🔒</span>
+                    <span class="nav-label">Data Sovereignty</span>
+                    <span class="nav-badge new">New</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <h1>Data Sovereignty</h1>
+                    <nav class="breadcrumb">
+                        <span>SLM Command Center</span>
+                        <span class="separator">/</span>
+                        <span class="current">Data Sovereignty</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <span class="datetime" id="current-datetime"></span>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Hero Section -->
+                <section class="sovereignty-hero">
+                    <div class="hero-content">
+                        <div class="hero-icon">🔒</div>
+                        <h2>Your Data Never Leaves Your Infrastructure</h2>
+                        <p>Self-hosted SLMs provide complete data sovereignty, ensuring your sensitive information stays within your security boundary at all times.</p>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="stat-value">100%</span>
+                            <span class="stat-label">Data Retained In-House</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Third-Party Data Sharing</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="stat-value">69%</span>
+                            <span class="stat-label">Enterprises Cite AI Data Leaks as Top Concern</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Architecture Selector -->
+                <section class="module-section">
+                    <h3>Deployment Architecture</h3>
+                    <p class="section-description">Choose your deployment model based on security and operational requirements</p>
+                    <div id="architecture-selector"></div>
+                </section>
+
+                <!-- Data Flow Diagram -->
+                <section class="module-section">
+                    <h3>Data Flow Visualization</h3>
+                    <div id="data-flow-diagram"></div>
+                </section>
+
+                <!-- Public vs Self-Hosted Comparison -->
+                <section class="module-section">
+                    <h3>Public API vs Self-Hosted Comparison</h3>
+                    <div id="sovereignty-comparison"></div>
+                </section>
+
+                <!-- Compliance Frameworks -->
+                <section class="module-section">
+                    <h3>Compliance Frameworks</h3>
+                    <p class="section-description">Click to select applicable compliance requirements</p>
+                    <div id="compliance-frameworks"></div>
+                    <div id="compliance-status"></div>
+                </section>
+
+                <!-- Security Controls -->
+                <section class="module-section">
+                    <h3>Security Controls</h3>
+                    <div id="security-controls"></div>
+                </section>
+
+                <!-- Export Button -->
+                <section class="module-section actions-section">
+                    <button class="btn-primary" id="export-architecture-btn">
+                        📄 Export Architecture Specification
+                    </button>
+                    <button class="btn-secondary" id="schedule-demo-btn">
+                        📅 Schedule Security Review
+                    </button>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Additional Styles for Data Sovereignty -->
+    <style>
+        .sovereignty-hero {
+            background: linear-gradient(135deg, #146eb4 0%, #0d4f80 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            color: white;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        .hero-content .hero-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .hero-content h2 { font-size: 1.75rem; margin-bottom: 0.75rem; }
+        .hero-content p { opacity: 0.9; line-height: 1.6; }
+        .hero-stats { display: flex; flex-direction: column; gap: 1rem; }
+        .hero-stat {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .hero-stat .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+        .hero-stat .stat-label { opacity: 0.9; }
+
+        .architecture-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .architecture-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .architecture-btn:hover { border-color: #4daae8; }
+        .architecture-btn.active {
+            border-color: #146eb4;
+            background: #f0f7ff;
+        }
+        .arch-name { display: block; font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .arch-desc { display: block; color: #666; font-size: 0.9rem; }
+
+        .flow-diagram {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #e0e0e0;
+        }
+        .diagram-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .animate-btn {
+            background: #146eb4;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .flow-visualization {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .flow-nodes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+        .flow-step.active { opacity: 1; transform: scale(1.1); }
+        .flow-step.complete { opacity: 1; }
+        .flow-step.complete .flow-node { background: #28a745; color: white; }
+        .flow-node {
+            background: white;
+            border: 2px solid #146eb4;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .flow-arrow { color: #146eb4; font-size: 1.5rem; font-weight: bold; }
+        .security-boundary {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #d4edda;
+            border-radius: 8px;
+            text-align: center;
+            color: #155724;
+            font-weight: 500;
+        }
+        .arch-features ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        .arch-features li {
+            color: #155724;
+            padding: 0.25rem 0;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .comparison-side {
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid;
+        }
+        .public-side { border-color: #dc3545; background: #fff5f5; }
+        .self-side { border-color: #28a745; background: #f0fff4; }
+        .side-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid;
+        }
+        .side-header.danger { border-color: #dc3545; color: #dc3545; }
+        .side-header.success { border-color: #28a745; color: #28a745; }
+        .side-icon { font-size: 1.5rem; }
+        .side-title { font-weight: 600; font-size: 1.1rem; }
+        .data-path {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        .danger-path { background: #f8d7da; color: #721c24; }
+        .success-path { background: #d4edda; color: #155724; }
+        .path-label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        .risk-item, .benefit-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            background: white;
+        }
+        .risk-item.critical { border-left: 3px solid #dc3545; }
+        .risk-item.high { border-left: 3px solid #fd7e14; }
+        .risk-item.medium { border-left: 3px solid #ffc107; }
+        .benefit-item { border-left: 3px solid #28a745; }
+        .risk-category, .benefit-category {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        .risk-desc, .benefit-desc { font-size: 0.85rem; color: #666; }
+
+        .sovereignty-stat {
+            text-align: center;
+            padding: 2rem;
+            background: #fff3cd;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+        .sovereignty-stat .stat-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #856404;
+            font-family: 'Outfit', sans-serif;
+        }
+        .sovereignty-stat .stat-label {
+            font-size: 1.25rem;
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        .sovereignty-stat .stat-source { font-size: 0.85rem; color: #997a00; }
+
+        .frameworks-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+        .framework-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .framework-card:hover { border-color: #4daae8; }
+        .framework-card.selected {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+        .framework-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .framework-icon { font-size: 1.5rem; }
+        .framework-name { font-weight: 600; }
+        .framework-desc { font-size: 0.75rem; color: #666; margin-bottom: 0.5rem; }
+        .framework-requirements { margin-bottom: 0.5rem; }
+        .requirement { display: block; font-size: 0.7rem; color: #155724; }
+        .framework-industries { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+        .industry-tag {
+            font-size: 0.65rem;
+            background: #e9ecef;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #495057;
+        }
+
+        #compliance-status {
+            margin-top: 1.5rem;
+        }
+        .compliance-summary {
+            background: #d4edda;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #155724;
+            margin-bottom: 1rem;
+        }
+        .check-icon { font-size: 1.5rem; }
+        .framework-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .compliance-badge {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .control-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .control-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .control-title { font-weight: 600; margin-bottom: 0.5rem; color: #333; }
+        .control-value { font-size: 0.85rem; color: #666; }
+
+        .actions-section {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .sovereignty-hero { grid-template-columns: 1fr; }
+            .architecture-options { grid-template-columns: 1fr; }
+            .comparison-container { grid-template-columns: 1fr; }
+            .frameworks-grid { grid-template-columns: repeat(3, 1fr); }
+            .controls-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/data-sovereignty.js"></script>
+</body>
+</html>

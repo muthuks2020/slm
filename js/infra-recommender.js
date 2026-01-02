@@ -51,12 +51,18 @@ const InfraRecommender = {
     
     // Model database
     models: [
-        { id: 'mistral-7b', name: 'Mistral 7B', params: '7B', vram: 14, strengths: ['rag', 'chatbot', 'general'], quality: 8.5 },
-        { id: 'phi-3-mini', name: 'Phi-3.5 Mini', params: '3.8B', vram: 8, strengths: ['code', 'extraction', 'classification'], quality: 8.2 },
-        { id: 'llama-3.2-3b', name: 'Llama 3.2 3B', params: '3B', vram: 6, strengths: ['chatbot', 'summarization', 'classification'], quality: 7.8 },
-        { id: 'llama-3.2-1b', name: 'Llama 3.2 1B', params: '1B', vram: 2, strengths: ['classification', 'extraction'], quality: 7.0 },
-        { id: 'qwen-2.5-7b', name: 'Qwen 2.5 7B', params: '7B', vram: 14, strengths: ['code', 'rag', 'summarization'], quality: 8.4 },
-        { id: 'gemma-2-9b', name: 'Gemma 2 9B', params: '9B', vram: 18, strengths: ['chatbot', 'rag', 'general'], quality: 8.3 }
+        // ShellKode Fine-Tuned Models (recommended for their domains)
+        { id: 'sk-clinical-7b', name: 'SK-Clinical-7B', params: '7B', vram: 14, strengths: ['rag', 'extraction', 'summarization'], quality: 9.2, type: 'shellkode', domain: 'healthcare', improvement: '+35%' },
+        { id: 'sk-finance-7b', name: 'SK-Finance-7B', params: '7B', vram: 14, strengths: ['rag', 'extraction', 'classification'], quality: 8.9, type: 'shellkode', domain: 'financial', improvement: '+28%' },
+        { id: 'sk-legal-3b', name: 'SK-Legal-3B', params: '3.8B', vram: 8, strengths: ['rag', 'extraction', 'summarization'], quality: 9.0, type: 'shellkode', domain: 'legal', improvement: '+41%' },
+        { id: 'sk-commerce-3b', name: 'SK-Commerce-3B', params: '3B', vram: 6, strengths: ['chatbot', 'summarization', 'classification'], quality: 8.8, type: 'shellkode', domain: 'retail', improvement: '+38%' },
+        // Base Models
+        { id: 'mistral-7b', name: 'Mistral 7B', params: '7B', vram: 14, strengths: ['rag', 'chatbot', 'general'], quality: 8.5, type: 'base' },
+        { id: 'phi-3-mini', name: 'Phi-3.5 Mini', params: '3.8B', vram: 8, strengths: ['code', 'extraction', 'classification'], quality: 8.2, type: 'base' },
+        { id: 'llama-3.2-3b', name: 'Llama 3.2 3B', params: '3B', vram: 6, strengths: ['chatbot', 'summarization', 'classification'], quality: 7.8, type: 'base' },
+        { id: 'llama-3.2-1b', name: 'Llama 3.2 1B', params: '1B', vram: 2, strengths: ['classification', 'extraction'], quality: 7.0, type: 'base' },
+        { id: 'qwen-2.5-7b', name: 'Qwen 2.5 7B', params: '7B', vram: 14, strengths: ['code', 'rag', 'summarization'], quality: 8.4, type: 'base' },
+        { id: 'gemma-2-9b', name: 'Gemma 2 9B', params: '9B', vram: 18, strengths: ['chatbot', 'rag', 'general'], quality: 8.3, type: 'base' }
     ],
     
     // GPU database
@@ -211,42 +217,19 @@ const InfraRecommender = {
         
         const resultContainer = document.getElementById('recommendation-result');
         if (resultContainer) {
-            resultContainer.innerHTML = `
-                <div class="thinking-animation">
-                    <div class="spinner"></div>
-                    <p class="thinking-text">Analyzing requirements...</p>
-                    <div class="thinking-steps" id="thinking-steps"></div>
-                </div>
-            `;
+            // Show enhanced loader
+            Loader.show(resultContainer, {
+                type: 'infrastructure',
+                title: 'Generating Recommendation',
+                subtitle: `Optimizing for ${this.selections.industry} ${this.selections.useCase} workload`,
+                showSteps: true,
+                stepCount: 5
+            });
         }
         
-        const steps = [
-            'Analyzing requirements',
-            'Evaluating models',
-            'Calculating costs',
-            'Optimizing latency',
-            'Checking compliance',
-            'Finalizing'
-        ];
-        
-        for (let i = 0; i < steps.length; i++) {
-            await Utils.sleep(500);
-            const stepsContainer = document.getElementById('thinking-steps');
-            const thinkingText = document.querySelector('.thinking-text');
-            
-            if (thinkingText) thinkingText.textContent = steps[i] + '...';
-            
-            if (stepsContainer) {
-                const step = document.createElement('span');
-                step.className = 'thinking-step';
-                step.textContent = steps[i];
-                step.style.animationDelay = `${i * 0.1}s`;
-                stepsContainer.appendChild(step);
-                setTimeout(() => step.classList.add('active'), 200);
-            }
-        }
-        
-        await Utils.sleep(300);
+        // Random delay 3-5 seconds
+        const delay = Loader.getRandomDelay();
+        await Utils.sleep(delay);
         
         const recommendation = this.calculateRecommendation();
         this.state.recommendation = recommendation;
@@ -264,9 +247,17 @@ const InfraRecommender = {
         const latencyData = this.options.latencyReqs.find(l => l.id === latency);
         const budgetData = this.options.budgets.find(b => b.id === budget);
         
-        // Score models
+        // Score models - prioritize ShellKode models for matching domains
         const modelScores = this.models.map(model => {
             let score = model.quality * 10;
+            
+            // Strong bonus for ShellKode models matching the industry
+            if (model.type === 'shellkode' && model.domain === industry) {
+                score += 40; // Major boost for domain-specific ShellKode model
+            } else if (model.type === 'shellkode') {
+                score += 15; // General boost for ShellKode models
+            }
+            
             if (model.strengths.includes(useCase)) score += 20;
             if (latency === 'realtime' && model.vram <= 8) score += 15;
             return { ...model, score };
@@ -308,7 +299,8 @@ const InfraRecommender = {
             costPerQuery: costPerQuery,
             savingsPercent: savingsPercent,
             estimatedLatency: Math.round(1000 / recommendedGPU.throughput),
-            throughput: recommendedGPU.throughput * instancesNeeded
+            throughput: recommendedGPU.throughput * instancesNeeded,
+            isShellKode: recommendedModel.type === 'shellkode'
         };
     },
     
@@ -317,20 +309,25 @@ const InfraRecommender = {
         const container = document.getElementById('recommendation-result');
         if (!container) return;
         
+        const shellkodeBadge = rec.isShellKode ? `<span style="display:inline-block;font-size:0.65rem;padding:0.2rem 0.5rem;background:#28a745;color:white;border-radius:4px;margin-left:0.5rem;vertical-align:middle;">ShellKode ${rec.model.improvement}</span>` : '';
+        const modelDetail = rec.isShellKode 
+            ? `${rec.model.params} parameters • Domain-optimized • Quality: ${rec.model.quality}/10`
+            : `${rec.model.params} parameters • Quality Score: ${rec.model.quality}/10`;
+        
         container.innerHTML = `
-            <div class="recommendation-card animate-fade-in">
-                <div class="recommendation-header">
-                    <h3 class="recommendation-title">🎯 Recommended Configuration</h3>
+            <div class="recommendation-card animate-fade-in" ${rec.isShellKode ? 'style="border: 2px solid #28a745;"' : ''}>
+                <div class="recommendation-header" ${rec.isShellKode ? 'style="background: linear-gradient(135deg, #f0fff4 0%, #e8f5e9 100%);"' : ''}>
+                    <h3 class="recommendation-title">${rec.isShellKode ? '🏆' : '🎯'} Recommended Configuration</h3>
                     <p class="recommendation-subtitle">Optimized for your ${this.selections.industry} ${this.selections.useCase} workload</p>
                 </div>
                 
                 <div class="recommendation-body">
-                    <div class="rec-item">
+                    <div class="rec-item" ${rec.isShellKode ? 'style="background: #f0fff4; border: 1px solid #28a745;"' : ''}>
                         <div class="rec-item-icon">🤖</div>
                         <div class="rec-item-content">
                             <div class="rec-item-label">Recommended Model</div>
-                            <div class="rec-item-value">${rec.model.name}</div>
-                            <div class="rec-item-detail">${rec.model.params} parameters • Quality Score: ${rec.model.quality}/10</div>
+                            <div class="rec-item-value">${rec.model.name}${shellkodeBadge}</div>
+                            <div class="rec-item-detail">${modelDetail}</div>
                         </div>
                     </div>
                     

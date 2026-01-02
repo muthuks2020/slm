@@ -1,39 +1,109 @@
 /* ============================================
    SLM Command Center - Cost Ticker Module
    Real-time cost comparison: GPT-4 vs SLM
+   With Industry-Specific Scenarios
    ============================================ */
 
 const CostTicker = {
+    // Industry configurations
+    industries: {
+        general: {
+            name: 'General',
+            icon: '🔷',
+            description: 'General enterprise use cases',
+            queries: [
+                "Summarize this quarterly report and highlight key metrics",
+                "Draft a professional email response to this customer inquiry",
+                "Analyze this document and extract the main action items"
+            ],
+            responses: {
+                gpt: "Based on my analysis, I've identified the following key points from the document. The quarterly revenue increased by 15% year-over-year, with particularly strong performance in the enterprise segment. Key action items include: reviewing the marketing budget allocation, scheduling follow-up meetings with stakeholders, and preparing the board presentation for next month.",
+                slm: "DOCUMENT ANALYSIS COMPLETE\n\nKey Metrics:\n• Revenue: +15% YoY\n• Enterprise segment: Strong performance\n\nAction Items:\n1. Review marketing budget allocation\n2. Schedule stakeholder meetings\n3. Prepare board presentation\n\n[Processed on-premise | Full audit trail available]"
+            },
+            avgInputTokens: 800,
+            avgOutputTokens: 400
+        },
+        healthcare: {
+            name: 'Healthcare',
+            icon: '🏥',
+            description: 'Clinical documentation & HIPAA compliance',
+            queries: [
+                "Summarize this patient's clinical notes and highlight medication changes",
+                "Extract ICD-10 codes from this discharge summary",
+                "Generate a HIPAA-compliant patient visit summary"
+            ],
+            responses: {
+                gpt: "Patient Summary: The clinical notes indicate a 65-year-old male with hypertension presenting with chest pain. Recent medication changes include: Lisinopril increased from 10mg to 20mg daily, addition of Metoprolol 25mg BID. Lab results show elevated troponin levels requiring cardiac monitoring. Recommend cardiology consult and continuous telemetry monitoring.",
+                slm: "CLINICAL SUMMARY [HIPAA-Compliant]\n\nPatient: 65y/o M | Chief Complaint: Chest pain\n\nMedication Changes:\n• Lisinopril: 10mg → 20mg daily\n• NEW: Metoprolol 25mg BID\n\nKey Findings: Elevated troponin, HTN\nRecommendation: Cardiology consult, telemetry\n\n[Generated on-premise | PHI retained in VPC | Audit ID: HC-2024-1847]"
+            },
+            avgInputTokens: 1200,
+            avgOutputTokens: 600
+        },
+        financial: {
+            name: 'Financial Services',
+            icon: '🏦',
+            description: 'SEC filings, compliance & risk analysis',
+            queries: [
+                "Analyze this SEC 10-K filing and summarize risk factors",
+                "Extract key metrics from this earnings call transcript",
+                "Generate a compliance report summary for regulatory review"
+            ],
+            responses: {
+                gpt: "SEC 10-K Risk Analysis: The filing identifies several material risk factors including: market volatility exposure with 23% revenue concentration in APAC region, cybersecurity vulnerabilities following two minor incidents in Q3, supply chain dependencies on three primary vendors, and regulatory compliance challenges in emerging markets. Year-over-year revenue growth of 12% is offset by margin compression of 2.3 percentage points.",
+                slm: "SEC 10-K RISK ANALYSIS [Confidential]\n\nMaterial Risks Identified:\n• Market Risk: 23% APAC concentration\n• Cyber Risk: 2 incidents Q3 (contained)\n• Supply Chain: 3 vendor dependencies\n• Regulatory: Emerging market compliance\n\nFinancials: +12% YoY revenue, -2.3pp margin\n\n[Processed on-premise | SOC2 compliant | No data shared externally | Audit: FIN-10K-2024-0892]"
+            },
+            avgInputTokens: 2000,
+            avgOutputTokens: 800
+        },
+        retail: {
+            name: 'Retail & E-commerce',
+            icon: '🛒',
+            description: 'Product content & customer analytics',
+            queries: [
+                "Generate SEO-optimized product descriptions for these items",
+                "Analyze customer reviews and categorize sentiment themes",
+                "Translate this product catalog to Spanish and French"
+            ],
+            responses: {
+                gpt: "Product Description - Premium Wireless Earbuds: Experience crystal-clear audio with our latest wireless earbuds featuring active noise cancellation. Enjoy up to 32 hours of battery life with the charging case. IPX5 water resistance makes them perfect for workouts. Bluetooth 5.3 ensures seamless connectivity with all your devices. Premium memory foam tips provide all-day comfort.",
+                slm: "PRODUCT DESCRIPTION [SEO-Optimized]\n\nPremium Wireless Earbuds - Model X500\n\n✓ Active Noise Cancellation (ANC)\n✓ 32-Hour Battery (with case)\n✓ IPX5 Water Resistant\n✓ Bluetooth 5.3\n✓ Memory Foam Tips\n\nKeywords: wireless earbuds, ANC, long battery, workout earbuds\nReadability: Grade 8 | SEO Score: 94/100\n\n[Batch processed: 50 items/min | Cost: $0.002/description]"
+            },
+            avgInputTokens: 500,
+            avgOutputTokens: 300
+        },
+        customer_service: {
+            name: 'Customer Service',
+            icon: '💬',
+            description: 'Support automation & ticket routing',
+            queries: [
+                "Classify this support ticket and suggest response template",
+                "Search knowledge base and draft response for this inquiry",
+                "Analyze this conversation and determine escalation need"
+            ],
+            responses: {
+                gpt: "Ticket Classification: Billing Inquiry - Priority Medium\n\nSuggested Response: Thank you for contacting us regarding your recent charge. I've reviewed your account and can see the charge of $49.99 on March 15th for your monthly subscription renewal. If you believe this charge was made in error or would like to discuss your subscription options, I'd be happy to help. Would you like me to explain the charges in detail or explore alternative plans?",
+                slm: "TICKET ANALYSIS [Auto-Classification]\n\nCategory: Billing | Priority: Medium | SLA: 4hrs\nSentiment: Neutral-Concerned | Escalation: No\n\nSUGGESTED RESPONSE:\n\"Thank you for reaching out about your $49.99 charge (Mar 15). This is your monthly subscription renewal. I can:\n• Explain charges in detail\n• Review alternative plans\n• Process refund if error\n\nHow would you like to proceed?\"\n\n[Response time: 0.3s | Confidence: 94% | KB Match: 3 articles]"
+            },
+            avgInputTokens: 400,
+            avgOutputTokens: 250
+        }
+    },
+
     // Pricing configuration (per 1M tokens)
     pricing: {
-        'gpt-4': {
-            input: 30.00,
-            output: 60.00,
-            name: 'GPT-4 API'
-        },
-        'gpt-4o': {
-            input: 5.00,
-            output: 15.00,
-            name: 'GPT-4o API'
-        },
-        'mistral-7b': {
-            input: 0.20,
-            output: 0.20,
-            name: 'Mistral 7B (Self-hosted)',
-            infrastructure: 1.21 // g5.2xlarge per hour
-        },
-        'phi-3': {
-            input: 0.15,
-            output: 0.15,
-            name: 'Phi-3.5 Mini (Self-hosted)',
-            infrastructure: 1.01
-        },
-        'llama-3.2': {
-            input: 0.18,
-            output: 0.18,
-            name: 'Llama 3.2 3B (Self-hosted)',
-            infrastructure: 1.01
-        }
+        // API Providers
+        'gpt-4': { input: 30.00, output: 60.00, name: 'GPT-4 API', type: 'api' },
+        'gpt-4o': { input: 5.00, output: 15.00, name: 'GPT-4o API', type: 'api' },
+        'claude-3': { input: 15.00, output: 75.00, name: 'Claude 3.5 API', type: 'api' },
+        // ShellKode Self-Hosted Models
+        'sk-clinical-7b': { input: 0.20, output: 0.20, name: 'SK-Clinical-7B', infrastructure: 1.21, type: 'shellkode', improvement: '+35%' },
+        'sk-finance-7b': { input: 0.20, output: 0.20, name: 'SK-Finance-7B', infrastructure: 1.21, type: 'shellkode', improvement: '+28%' },
+        'sk-legal-3b': { input: 0.15, output: 0.15, name: 'SK-Legal-3B', infrastructure: 1.01, type: 'shellkode', improvement: '+41%' },
+        'sk-commerce-3b': { input: 0.18, output: 0.18, name: 'SK-Commerce-3B', infrastructure: 1.01, type: 'shellkode', improvement: '+38%' },
+        // Base Models (Self-Hosted)
+        'mistral-7b': { input: 0.20, output: 0.20, name: 'Mistral 7B (Base)', infrastructure: 1.21, type: 'base' },
+        'phi-3': { input: 0.15, output: 0.15, name: 'Phi-3.5 Mini (Base)', infrastructure: 1.01, type: 'base' },
+        'llama-3.2': { input: 0.18, output: 0.18, name: 'Llama 3.2 3B (Base)', infrastructure: 1.01, type: 'base' }
     },
     
     // State
@@ -44,37 +114,87 @@ const CostTicker = {
         queryCount: 0,
         dailyVolume: 10000,
         selectedGpt: 'gpt-4',
-        selectedSlm: 'mistral-7b',
-        avgInputTokens: 500,
-        avgOutputTokens: 200
+        selectedSlm: 'sk-clinical-7b',
+        currentIndustry: 'general',
+        avgInputTokens: 800,
+        avgOutputTokens: 400
     },
     
-    // Initialize module
     init() {
+        this.renderIndustrySelector();
         this.bindEvents();
         this.updateProjections();
         this.setupVolumeSlider();
+        this.loadSampleQueries();
     },
     
-    // Bind event listeners
+    renderIndustrySelector() {
+        const container = document.getElementById('industry-selector');
+        if (!container) return;
+        
+        let html = '<div class="industry-tabs">';
+        for (const [key, industry] of Object.entries(this.industries)) {
+            const isActive = key === this.state.currentIndustry ? 'active' : '';
+            html += `<button class="industry-tab ${isActive}" data-industry="${key}">
+                <span class="industry-icon">${industry.icon}</span>
+                <span class="industry-name">${industry.name}</span>
+            </button>`;
+        }
+        html += '</div>';
+        container.innerHTML = html;
+        
+        container.querySelectorAll('.industry-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                this.setIndustry(e.currentTarget.dataset.industry);
+            });
+        });
+    },
+    
+    setIndustry(industry) {
+        this.state.currentIndustry = industry;
+        const config = this.industries[industry];
+        this.state.avgInputTokens = config.avgInputTokens;
+        this.state.avgOutputTokens = config.avgOutputTokens;
+        
+        document.querySelectorAll('.industry-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.industry === industry);
+        });
+        
+        const desc = document.getElementById('industry-description');
+        if (desc) desc.textContent = config.description;
+        
+        this.loadSampleQueries();
+        this.updateProjections();
+    },
+    
+    loadSampleQueries() {
+        const container = document.getElementById('sample-queries');
+        if (!container) return;
+        
+        const config = this.industries[this.state.currentIndustry];
+        let html = '';
+        config.queries.forEach((query, i) => {
+            html += `<button class="sample-query-btn" data-query="${i}">${query.substring(0, 50)}...</button>`;
+        });
+        container.innerHTML = html;
+        
+        container.querySelectorAll('.sample-query-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const queryInput = document.getElementById('query-input');
+                if (queryInput) queryInput.value = config.queries[parseInt(e.target.dataset.query)];
+            });
+        });
+    },
+    
     bindEvents() {
-        // Query input
         const queryInput = document.getElementById('query-input');
         if (queryInput) {
-            queryInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    this.runComparison();
-                }
-            });
+            queryInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.runComparison(); });
         }
         
-        // Run button
         const runBtn = document.getElementById('run-comparison-btn');
-        if (runBtn) {
-            runBtn.addEventListener('click', () => this.runComparison());
-        }
+        if (runBtn) runBtn.addEventListener('click', () => this.runComparison());
         
-        // Model selectors
         const gptSelect = document.getElementById('gpt-model-select');
         if (gptSelect) {
             gptSelect.addEventListener('change', (e) => {
@@ -92,11 +212,9 @@ const CostTicker = {
         }
     },
     
-    // Setup volume slider
     setupVolumeSlider() {
         const slider = document.getElementById('volume-slider');
         const display = document.getElementById('volume-display');
-        
         if (slider && display) {
             slider.addEventListener('input', (e) => {
                 this.state.dailyVolume = parseInt(e.target.value);
@@ -106,177 +224,128 @@ const CostTicker = {
         }
     },
     
-    // Calculate cost for a single query
     calculateQueryCost(model, inputTokens, outputTokens) {
         const pricing = this.pricing[model];
         if (!pricing) return 0;
-        
-        const inputCost = (inputTokens / 1000000) * pricing.input;
-        const outputCost = (outputTokens / 1000000) * pricing.output;
-        
-        return inputCost + outputCost;
+        return (inputTokens / 1000000) * pricing.input + (outputTokens / 1000000) * pricing.output;
     },
     
-    // Calculate infrastructure cost per query
     calculateInfraCost(model, queriesPerHour = 100) {
         const pricing = this.pricing[model];
         if (!pricing || !pricing.infrastructure) return 0;
-        
         return pricing.infrastructure / queriesPerHour;
     },
     
-    // Run comparison
     async runComparison() {
         if (this.state.isRunning) return;
         
         const queryInput = document.getElementById('query-input');
-        const query = queryInput?.value || 'What are the key benefits of using Small Language Models for enterprise applications?';
+        const config = this.industries[this.state.currentIndustry];
+        const query = queryInput?.value || config.queries[0];
         
         this.state.isRunning = true;
         this.state.queryCount++;
         
-        // Reset displays
-        this.resetCostDisplays();
+        // Show loader in both response areas
+        const gptResponse = document.getElementById('gpt-response');
+        const slmResponse = document.getElementById('slm-response');
         
-        // Simulate both responses simultaneously
-        await Promise.all([
-            this.simulateGptResponse(query),
-            this.simulateSlmResponse(query)
-        ]);
+        if (gptResponse) {
+            gptResponse.innerHTML = Loader.dotsHTML('Querying API...');
+        }
+        if (slmResponse) {
+            slmResponse.innerHTML = Loader.dotsHTML('Processing locally...');
+        }
+        
+        // Random delay 3-5 seconds
+        const delay = Loader.getRandomDelay();
+        await Utils.sleep(delay);
+        
+        this.resetCostDisplays();
+        await Promise.all([this.simulateGptResponse(query), this.simulateSlmResponse(query)]);
         
         this.state.isRunning = false;
         this.updateProjections();
-        
-        Toast.success('Comparison complete! See the cost difference.');
+        Toast.success(`${config.name} comparison complete! See the cost difference.`);
     },
     
-    // Simulate GPT response
     async simulateGptResponse(query) {
         const responseArea = document.getElementById('gpt-response');
         const costDisplay = document.getElementById('gpt-cost');
-        
         if (!responseArea || !costDisplay) return;
         
         responseArea.innerHTML = '<span class="typing-cursor"></span>';
+        const config = this.industries[this.state.currentIndustry];
+        const response = config.responses.gpt;
         
-        // Simulate typing response
-        const response = `Based on my analysis, Small Language Models offer several compelling advantages for enterprise deployments. First, they provide significantly reduced operational costs—often 3-23x lower than frontier models. Second, they enable complete data sovereignty, keeping sensitive information within your infrastructure. Third, they offer faster inference times with lower latency, typically under 100ms. Fourth, they're highly customizable through fine-tuning on domain-specific data. Finally, they reduce dependency on external API providers, eliminating concerns about rate limits and service disruptions.`;
-        
-        let currentText = '';
         const inputTokens = this.estimateTokens(query);
         const outputTokens = this.estimateTokens(response);
-        
-        // Animate cost counter during typing
-        const startTime = Date.now();
-        const typingDuration = response.length * 15;
         const totalCost = this.calculateQueryCost(this.state.selectedGpt, inputTokens, outputTokens);
+        const typingDuration = response.length * 15;
+        const startTime = Date.now();
         
         const costInterval = setInterval(() => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / typingDuration, 1);
-            const currentCost = totalCost * progress;
-            costDisplay.textContent = '$' + currentCost.toFixed(4);
-            this.state.gptCost += (totalCost / (typingDuration / 50));
-            
-            if (progress >= 1) {
-                clearInterval(costInterval);
-                costDisplay.textContent = '$' + totalCost.toFixed(4);
-            }
+            const progress = Math.min((Date.now() - startTime) / typingDuration, 1);
+            costDisplay.textContent = '$' + (totalCost * progress).toFixed(4);
+            if (progress >= 1) { clearInterval(costInterval); costDisplay.textContent = '$' + totalCost.toFixed(4); }
         }, 50);
         
-        // Type out response
+        let currentText = '';
         for (let i = 0; i < response.length; i++) {
             currentText += response[i];
             responseArea.innerHTML = currentText + '<span class="typing-cursor"></span>';
             await Utils.sleep(15);
         }
-        
         responseArea.innerHTML = currentText;
     },
     
-    // Simulate SLM response
     async simulateSlmResponse(query) {
         const responseArea = document.getElementById('slm-response');
         const costDisplay = document.getElementById('slm-cost');
-        
         if (!responseArea || !costDisplay) return;
         
         responseArea.innerHTML = '<span class="typing-cursor"></span>';
+        const config = this.industries[this.state.currentIndustry];
+        const response = config.responses.slm;
         
-        // Simulate faster typing (SLM is faster)
-        const response = `Small Language Models provide enterprise-ready advantages: 1) Cost efficiency - 3-23x lower costs than GPT-4/Claude; 2) Data sovereignty - your data stays on your infrastructure, meeting HIPAA/SOC2/GDPR requirements; 3) Low latency - sub-100ms response times for real-time applications; 4) Customization - fine-tune on your domain data for 20-30% accuracy improvements; 5) Predictable costs - no surprise API bills, fixed infrastructure spend. Our Mistral 7B deployment on AWS g5.2xlarge handles 50+ requests/second at $0.0004 per query.`;
-        
-        let currentText = '';
         const inputTokens = this.estimateTokens(query);
         const outputTokens = this.estimateTokens(response);
-        
-        const totalCost = this.calculateQueryCost(this.state.selectedSlm, inputTokens, outputTokens) + 
-                          this.calculateInfraCost(this.state.selectedSlm, 100);
-        
+        const totalCost = this.calculateQueryCost(this.state.selectedSlm, inputTokens, outputTokens) + this.calculateInfraCost(this.state.selectedSlm, 100);
+        const typingDuration = response.length * 8;
         const startTime = Date.now();
-        const typingDuration = response.length * 10; // Faster typing
         
         const costInterval = setInterval(() => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / typingDuration, 1);
-            const currentCost = totalCost * progress;
-            costDisplay.textContent = '$' + currentCost.toFixed(6);
-            this.state.slmCost += (totalCost / (typingDuration / 50));
-            
-            if (progress >= 1) {
-                clearInterval(costInterval);
-                costDisplay.textContent = '$' + totalCost.toFixed(6);
-            }
+            const progress = Math.min((Date.now() - startTime) / typingDuration, 1);
+            costDisplay.textContent = '$' + (totalCost * progress).toFixed(6);
+            if (progress >= 1) { clearInterval(costInterval); costDisplay.textContent = '$' + totalCost.toFixed(6); }
         }, 50);
         
-        // Type out response (faster)
+        let currentText = '';
         for (let i = 0; i < response.length; i++) {
             currentText += response[i];
-            responseArea.innerHTML = currentText + '<span class="typing-cursor"></span>';
-            await Utils.sleep(10);
+            responseArea.innerHTML = currentText.replace(/\n/g, '<br>') + '<span class="typing-cursor"></span>';
+            await Utils.sleep(8);
         }
-        
-        responseArea.innerHTML = currentText;
+        responseArea.innerHTML = currentText.replace(/\n/g, '<br>');
     },
     
-    // Estimate tokens (rough approximation)
-    estimateTokens(text) {
-        return Math.ceil(text.length / 4);
-    },
+    estimateTokens(text) { return Math.ceil(text.length / 4); },
     
-    // Reset cost displays
     resetCostDisplays() {
         const gptCost = document.getElementById('gpt-cost');
         const slmCost = document.getElementById('slm-cost');
-        
         if (gptCost) gptCost.textContent = '$0.0000';
         if (slmCost) slmCost.textContent = '$0.000000';
     },
     
-    // Update projections based on volume
     updateProjections() {
         const volume = this.state.dailyVolume;
+        const gptDailyCost = this.calculateQueryCost(this.state.selectedGpt, this.state.avgInputTokens, this.state.avgOutputTokens) * volume;
+        const slmDailyCost = (this.calculateQueryCost(this.state.selectedSlm, this.state.avgInputTokens, this.state.avgOutputTokens) + this.calculateInfraCost(this.state.selectedSlm, volume / 24)) * volume;
         
-        // Calculate daily costs
-        const gptDailyCost = this.calculateQueryCost(
-            this.state.selectedGpt, 
-            this.state.avgInputTokens, 
-            this.state.avgOutputTokens
-        ) * volume;
-        
-        const slmDailyCost = (
-            this.calculateQueryCost(
-                this.state.selectedSlm, 
-                this.state.avgInputTokens, 
-                this.state.avgOutputTokens
-            ) + this.calculateInfraCost(this.state.selectedSlm, volume / 24)
-        ) * volume;
-        
-        // Monthly projections
         const gptMonthlyCost = gptDailyCost * 30;
         const slmMonthlyCost = slmDailyCost * 30 + (this.pricing[this.state.selectedSlm].infrastructure * 24 * 30);
         
-        // Update displays
         const gptMonthly = document.getElementById('gpt-monthly-cost');
         const slmMonthly = document.getElementById('slm-monthly-cost');
         const savings = document.getElementById('monthly-savings');
@@ -286,27 +355,21 @@ const CostTicker = {
         if (slmMonthly) slmMonthly.textContent = '$' + slmMonthlyCost.toFixed(2);
         
         const monthlySavings = gptMonthlyCost - slmMonthlyCost;
-        const percentSavings = ((monthlySavings / gptMonthlyCost) * 100).toFixed(0);
+        const percentSavings = gptMonthlyCost > 0 ? ((monthlySavings / gptMonthlyCost) * 100).toFixed(0) : 0;
         
-        if (savings) {
-            Utils.animateCounter(savings, 0, monthlySavings, 1000, '$', '');
-        }
-        if (savingsPercent) {
-            savingsPercent.textContent = percentSavings + '%';
-        }
+        if (savings) Utils.animateCounter(savings, 0, monthlySavings, 1000, '$', '');
+        if (savingsPercent) savingsPercent.textContent = percentSavings + '%';
         
-        // Update annual projection
         const annualSavings = document.getElementById('annual-savings');
-        if (annualSavings) {
-            annualSavings.textContent = '$' + (monthlySavings * 12).toFixed(0);
+        if (annualSavings) annualSavings.textContent = '$' + (monthlySavings * 12).toFixed(0);
+        
+        const industryNote = document.getElementById('industry-note');
+        if (industryNote) {
+            const config = this.industries[this.state.currentIndustry];
+            industryNote.innerHTML = `<strong>${config.icon} ${config.name}:</strong> ${config.description}`;
         }
     }
 };
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    CostTicker.init();
-});
-
-// Export for global access
+document.addEventListener('DOMContentLoaded', () => CostTicker.init());
 window.CostTicker = CostTicker;

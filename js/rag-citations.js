@@ -1,416 +1,434 @@
 /* ============================================
    SLM Command Center - RAG Citations Module
-   Document Q&A with traceable source citations
+   Retrieval-Augmented Generation with Traceable Sources
+   Industry-Specific Knowledge Bases
    ============================================ */
 
 const RAGCitations = {
-    // Sample documents (in production, these would be uploaded)
-    documents: [
-        {
-            id: 1,
-            title: 'Employee Handbook 2024',
-            type: 'Policy Document',
-            updatedAt: 'March 2024',
-            sections: [
-                {
-                    id: '1.1',
-                    section: 'Section 4.2 - Remote Work Policy',
-                    page: 47,
-                    content: 'Employees may work remotely up to 3 days per week with manager approval. Remote work arrangements must be documented and reviewed quarterly. All remote workers must maintain a secure home office environment and use company-approved VPN connections.'
-                },
-                {
-                    id: '1.2',
-                    section: 'Section 5.1 - PTO Policy',
-                    page: 52,
-                    content: 'Full-time employees accrue 15 days of paid time off annually during their first 3 years. After 3 years, accrual increases to 20 days. PTO requests must be submitted at least 2 weeks in advance for periods exceeding 3 consecutive days.'
-                },
-                {
-                    id: '1.3',
-                    section: 'Section 6.3 - Benefits Enrollment',
-                    page: 68,
-                    content: 'Open enrollment occurs annually in November. New hires have 30 days from start date to enroll. Changes outside enrollment periods require a qualifying life event such as marriage, birth of child, or loss of other coverage.'
+    // Industry configurations with knowledge bases
+    industries: {
+        general: {
+            name: 'General',
+            icon: '🔷',
+            description: 'Corporate policies & procedures',
+            documents: [
+                { id: 'DOC-001', title: 'Employee Handbook 2024', type: 'PDF', pages: 45 },
+                { id: 'DOC-002', title: 'Remote Work Policy', type: 'PDF', pages: 12 },
+                { id: 'DOC-003', title: 'IT Security Guidelines', type: 'PDF', pages: 28 },
+                { id: 'DOC-004', title: 'Travel & Expense Policy', type: 'PDF', pages: 15 },
+                { id: 'DOC-005', title: 'Code of Conduct', type: 'PDF', pages: 20 }
+            ],
+            queries: [
+                "What is our policy on remote work?",
+                "How many PTO days do employees get?",
+                "What are the IT security requirements?",
+                "How do I submit travel expenses?"
+            ],
+            responses: {
+                "What is our policy on remote work?": {
+                    answer: "According to our Remote Work Policy, employees may work remotely up to 3 days per week with manager approval. Key requirements include: maintaining core hours (10am-3pm), using company-approved VPN, and ensuring a dedicated workspace. Remote work arrangements must be documented in the HR system.",
+                    citations: [
+                        { doc: 'DOC-002', section: 'Section 2.1', page: 3, text: 'Employees may request remote work arrangements for up to 3 days per week' },
+                        { doc: 'DOC-002', section: 'Section 3.2', page: 5, text: 'Core hours of 10am-3pm must be maintained regardless of location' },
+                        { doc: 'DOC-003', section: 'Section 4.1', page: 8, text: 'All remote connections must use the company-approved VPN solution' }
+                    ]
                 }
-            ]
+            }
         },
-        {
-            id: 2,
-            title: 'IT Security Guidelines',
-            type: 'Technical Documentation',
-            updatedAt: 'January 2024',
-            sections: [
-                {
-                    id: '2.1',
-                    section: 'Section 2.1 - Password Requirements',
-                    page: 12,
-                    content: 'All passwords must be minimum 12 characters with at least one uppercase, lowercase, number, and special character. Passwords expire every 90 days and cannot repeat the last 10 passwords used. Multi-factor authentication is required for all systems.'
-                },
-                {
-                    id: '2.2',
-                    section: 'Section 3.4 - Data Classification',
-                    page: 28,
-                    content: 'Data is classified into four tiers: Public, Internal, Confidential, and Restricted. Restricted data includes PII, financial records, and trade secrets. Restricted data must be encrypted at rest and in transit using AES-256 encryption.'
+        healthcare: {
+            name: 'Healthcare',
+            icon: '🏥',
+            description: 'Clinical protocols & compliance',
+            documents: [
+                { id: 'MED-001', title: 'Clinical Treatment Protocols', type: 'PDF', pages: 120 },
+                { id: 'MED-002', title: 'HIPAA Compliance Manual', type: 'PDF', pages: 85 },
+                { id: 'MED-003', title: 'Medication Administration Guide', type: 'PDF', pages: 60 },
+                { id: 'MED-004', title: 'Patient Safety Procedures', type: 'PDF', pages: 45 },
+                { id: 'MED-005', title: 'Emergency Response Protocols', type: 'PDF', pages: 35 }
+            ],
+            queries: [
+                "What is the protocol for chest pain assessment?",
+                "How do we handle PHI data requests?",
+                "What are the medication double-check procedures?",
+                "When should a patient be escalated to ICU?"
+            ],
+            responses: {
+                "What is the protocol for chest pain assessment?": {
+                    answer: "For chest pain assessment, follow the HEART Score protocol: obtain 12-lead ECG within 10 minutes of arrival, draw troponin levels at 0 and 3 hours, assess risk factors including age >65, known CAD, and diabetes. Patients with HEART score ≥4 require cardiology consult. All findings must be documented in the EHR within 30 minutes.",
+                    citations: [
+                        { doc: 'MED-001', section: 'Chapter 5.2', page: 42, text: 'HEART Score protocol: ECG within 10 minutes, troponin at 0 and 3 hours' },
+                        { doc: 'MED-001', section: 'Chapter 5.3', page: 45, text: 'HEART score ≥4 requires mandatory cardiology consultation' },
+                        { doc: 'MED-004', section: 'Section 8.1', page: 28, text: 'All cardiac assessments must be documented in EHR within 30 minutes' }
+                    ]
                 }
-            ]
+            }
         },
-        {
-            id: 3,
-            title: 'Product Specifications Q4',
-            type: 'Product Manual',
-            updatedAt: 'October 2024',
-            sections: [
-                {
-                    id: '3.1',
-                    section: 'Chapter 3 - API Rate Limits',
-                    page: 34,
-                    content: 'Standard tier allows 1,000 requests per minute with burst capacity of 2,000. Enterprise tier provides 10,000 requests per minute with dedicated infrastructure. Rate limit headers are included in all responses.'
-                },
-                {
-                    id: '3.2',
-                    section: 'Chapter 5 - SLA Commitments',
-                    page: 56,
-                    content: 'We guarantee 99.9% uptime for production APIs. Scheduled maintenance windows occur monthly on the first Sunday, 2-4 AM UTC. Emergency maintenance may occur with 4-hour notice. SLA credits apply for downtime exceeding commitments.'
+        financial: {
+            name: 'Financial Services',
+            icon: '🏦',
+            description: 'Compliance & regulatory docs',
+            documents: [
+                { id: 'FIN-001', title: 'SEC Compliance Handbook', type: 'PDF', pages: 200 },
+                { id: 'FIN-002', title: 'AML/KYC Procedures', type: 'PDF', pages: 95 },
+                { id: 'FIN-003', title: 'Trading Policies Manual', type: 'PDF', pages: 150 },
+                { id: 'FIN-004', title: 'Risk Management Framework', type: 'PDF', pages: 80 },
+                { id: 'FIN-005', title: 'Client Data Protection Policy', type: 'PDF', pages: 45 }
+            ],
+            queries: [
+                "What are the KYC requirements for new clients?",
+                "How do we report suspicious transactions?",
+                "What is the policy on insider trading?",
+                "When is regulatory disclosure required?"
+            ],
+            responses: {
+                "What are the KYC requirements for new clients?": {
+                    answer: "For new client onboarding, KYC requirements include: government-issued ID verification, proof of address within 90 days, source of funds documentation for accounts >$50K, and enhanced due diligence for PEPs or high-risk jurisdictions. All documentation must be retained for 7 years after account closure per BSA requirements.",
+                    citations: [
+                        { doc: 'FIN-002', section: 'Section 3.1', page: 15, text: 'Standard KYC: government ID, proof of address dated within 90 days' },
+                        { doc: 'FIN-002', section: 'Section 3.4', page: 22, text: 'Enhanced due diligence required for PEPs and high-risk jurisdictions' },
+                        { doc: 'FIN-002', section: 'Section 7.2', page: 58, text: 'BSA retention requirement: 7 years post-account closure' }
+                    ]
                 }
-            ]
+            }
+        },
+        retail: {
+            name: 'Retail & E-commerce',
+            icon: '🛒',
+            description: 'Product & operations docs',
+            documents: [
+                { id: 'RET-001', title: 'Product Catalog 2024', type: 'PDF', pages: 500 },
+                { id: 'RET-002', title: 'Return & Refund Policy', type: 'PDF', pages: 25 },
+                { id: 'RET-003', title: 'Shipping Guidelines', type: 'PDF', pages: 35 },
+                { id: 'RET-004', title: 'Warranty Information', type: 'PDF', pages: 40 },
+                { id: 'RET-005', title: 'Size & Fit Guide', type: 'PDF', pages: 30 }
+            ],
+            queries: [
+                "What is our return policy for electronics?",
+                "How long does standard shipping take?",
+                "What items are not eligible for returns?",
+                "How do I process a warranty claim?"
+            ],
+            responses: {
+                "What is our return policy for electronics?": {
+                    answer: "Electronics can be returned within 30 days of purchase with original packaging and receipt. Items must be in original condition with all accessories. Opened software, downloadable products, and items with missing serial numbers are not eligible. Refunds are processed within 5-7 business days to the original payment method.",
+                    citations: [
+                        { doc: 'RET-002', section: 'Section 2.3', page: 8, text: 'Electronics: 30-day return window with original packaging required' },
+                        { doc: 'RET-002', section: 'Section 2.5', page: 10, text: 'Exclusions: opened software, downloads, missing serial numbers' },
+                        { doc: 'RET-002', section: 'Section 4.1', page: 18, text: 'Refund processing: 5-7 business days to original payment method' }
+                    ]
+                }
+            }
+        },
+        customer_service: {
+            name: 'Customer Service',
+            icon: '💬',
+            description: 'Support knowledge base',
+            documents: [
+                { id: 'SUP-001', title: 'Product Troubleshooting Guide', type: 'PDF', pages: 150 },
+                { id: 'SUP-002', title: 'Account Management FAQ', type: 'PDF', pages: 40 },
+                { id: 'SUP-003', title: 'Billing Support Manual', type: 'PDF', pages: 55 },
+                { id: 'SUP-004', title: 'Escalation Procedures', type: 'PDF', pages: 25 },
+                { id: 'SUP-005', title: 'Service Level Agreements', type: 'PDF', pages: 30 }
+            ],
+            queries: [
+                "How do I reset a customer's password?",
+                "What is the refund process for billing errors?",
+                "When should I escalate to Tier 2 support?",
+                "What is the SLA for critical issues?"
+            ],
+            responses: {
+                "How do I reset a customer's password?": {
+                    answer: "To reset a customer's password: 1) Verify identity using security questions or last 4 digits of payment method, 2) Send password reset link to registered email (valid 24 hours), 3) If email access is lost, escalate to Tier 2 with identity verification form. Never share temporary passwords verbally. Log all reset requests in CRM.",
+                    citations: [
+                        { doc: 'SUP-002', section: 'Section 3.2', page: 15, text: 'Identity verification: security questions OR last 4 digits of payment' },
+                        { doc: 'SUP-002', section: 'Section 3.3', page: 16, text: 'Password reset link valid for 24 hours; escalate if email inaccessible' },
+                        { doc: 'SUP-004', section: 'Section 2.1', page: 8, text: 'Security policy: never share temporary passwords verbally' }
+                    ]
+                }
+            }
         }
-    ],
-    
-    // State
+    },
+
     state: {
+        currentIndustry: 'general',
         messages: [],
-        activeSourceId: null,
-        isProcessing: false
+        selectedDocument: null
     },
-    
-    // Initialize module
+
     init() {
-        this.renderDocumentsList();
+        this.renderIndustrySelector();
+        this.renderDocumentList();
+        this.renderSampleQueries();
         this.bindEvents();
-        this.addWelcomeMessage();
     },
-    
-    // Bind events
-    bindEvents() {
-        const input = document.getElementById('rag-input');
-        const sendBtn = document.getElementById('rag-send-btn');
+
+    renderIndustrySelector() {
+        const container = document.getElementById('industry-selector');
+        if (!container) return;
+
+        let html = '<div class="industry-tabs">';
+        for (const [key, industry] of Object.entries(this.industries)) {
+            const isActive = key === this.state.currentIndustry ? 'active' : '';
+            html += `<button class="industry-tab ${isActive}" data-industry="${key}">
+                <span class="industry-icon">${industry.icon}</span>
+                <span class="industry-name">${industry.name}</span>
+            </button>`;
+        }
+        html += '</div>';
+        container.innerHTML = html;
+
+        container.querySelectorAll('.industry-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => this.setIndustry(e.currentTarget.dataset.industry));
+        });
+    },
+
+    setIndustry(industry) {
+        this.state.currentIndustry = industry;
+        this.state.messages = [];
+
+        document.querySelectorAll('.industry-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.industry === industry);
+        });
+
+        const desc = document.getElementById('industry-description');
+        if (desc) desc.textContent = this.industries[industry].description;
+
+        this.renderDocumentList();
+        this.renderSampleQueries();
+        this.clearChat();
+    },
+
+    renderDocumentList() {
+        const container = document.getElementById('document-list');
+        if (!container) return;
+
+        const config = this.industries[this.state.currentIndustry];
+        let html = `<div class="document-header"><h4>${config.icon} ${config.name} Knowledge Base</h4>
+            <span class="doc-count">${config.documents.length} documents indexed</span></div>`;
         
+        html += '<div class="document-items">';
+        config.documents.forEach(doc => {
+            html += `<div class="document-item" data-doc="${doc.id}">
+                <span class="doc-icon">📄</span>
+                <div class="doc-info">
+                    <span class="doc-title">${doc.title}</span>
+                    <span class="doc-meta">${doc.type} • ${doc.pages} pages</span>
+                </div>
+            </div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    },
+
+    renderSampleQueries() {
+        const container = document.getElementById('sample-queries');
+        if (!container) return;
+
+        const config = this.industries[this.state.currentIndustry];
+        let html = '';
+        config.queries.forEach(query => {
+            html += `<button class="sample-query-btn">${query}</button>`;
+        });
+        container.innerHTML = html;
+
+        container.querySelectorAll('.sample-query-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const input = document.getElementById('chat-input');
+                if (input) input.value = e.target.textContent;
+            });
+        });
+    },
+
+    bindEvents() {
+        const input = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+
         if (input) {
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    this.sendQuery();
+                    this.sendMessage();
                 }
             });
         }
-        
-        if (sendBtn) {
-            sendBtn.addEventListener('click', () => this.sendQuery());
-        }
-        
-        // Sample query buttons
-        document.querySelectorAll('.sample-query-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const query = btn.dataset.query;
-                if (input) input.value = query;
-                this.sendQuery();
-            });
-        });
+
+        if (sendBtn) sendBtn.addEventListener('click', () => this.sendMessage());
+
+        const exportBtn = document.getElementById('export-audit-btn');
+        if (exportBtn) exportBtn.addEventListener('click', () => this.exportAuditLog());
     },
-    
-    // Render documents list
-    renderDocumentsList() {
-        const container = document.getElementById('documents-list');
-        if (!container) return;
-        
-        container.innerHTML = this.documents.map(doc => `
-            <div class="document-item" data-doc-id="${doc.id}">
-                <div class="document-icon">📄</div>
-                <div class="document-info">
-                    <div class="document-title">${doc.title}</div>
-                    <div class="document-meta">${doc.type} • Updated ${doc.updatedAt}</div>
-                </div>
-            </div>
-        `).join('');
-    },
-    
-    // Add welcome message
-    addWelcomeMessage() {
-        const welcomeMsg = {
-            type: 'assistant',
-            content: 'Hello! I can answer questions about your uploaded documents with precise source citations. Try asking about remote work policies, PTO, security requirements, or API specifications.',
-            citations: []
-        };
-        
-        this.state.messages.push(welcomeMsg);
-        this.renderMessages();
-    },
-    
-    // Send query
-    async sendQuery() {
-        const input = document.getElementById('rag-input');
-        const query = input?.value.trim();
-        
-        if (!query || this.state.isProcessing) return;
-        
-        // Add user message
-        this.state.messages.push({
-            type: 'user',
-            content: query
-        });
-        
+
+    async sendMessage() {
+        const input = document.getElementById('chat-input');
+        if (!input || !input.value.trim()) return;
+
+        const query = input.value.trim();
         input.value = '';
-        this.renderMessages();
-        this.state.isProcessing = true;
-        
-        // Show typing indicator
-        this.showTypingIndicator();
-        
-        // Simulate RAG retrieval and response
-        await Utils.sleep(1500);
-        
-        const response = this.generateResponse(query);
-        
-        this.hideTypingIndicator();
-        
-        this.state.messages.push(response);
-        this.renderMessages();
-        this.renderSources(response.citations);
-        
-        this.state.isProcessing = false;
+
+        this.addMessage('user', query);
+        await this.generateResponse(query);
     },
-    
-    // Generate response with citations
-    generateResponse(query) {
-        const lowerQuery = query.toLowerCase();
+
+    addMessage(role, content, citations = null) {
+        const chatContainer = document.getElementById('chat-messages');
+        if (!chatContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${role}-message`;
+
+        let html = `<div class="message-content">${content}</div>`;
         
-        // Match query to relevant content
-        if (lowerQuery.includes('remote') || lowerQuery.includes('work from home')) {
-            return {
-                type: 'assistant',
-                content: `Based on the Employee Handbook, employees may work remotely up to 3 days per week with manager approval <span class="citation-link" data-source="1.1">1</span>. All remote work arrangements must be documented and reviewed quarterly. Additionally, remote workers must maintain a secure home office environment and use company-approved VPN connections <span class="citation-link" data-source="1.1">1</span>. For security requirements, please refer to the IT Security Guidelines which mandate multi-factor authentication for all systems <span class="citation-link" data-source="2.1">2</span>.`,
-                citations: ['1.1', '2.1']
-            };
-        }
-        
-        if (lowerQuery.includes('pto') || lowerQuery.includes('vacation') || lowerQuery.includes('time off')) {
-            return {
-                type: 'assistant',
-                content: `According to Section 5.1 of the Employee Handbook, full-time employees accrue 15 days of paid time off annually during their first 3 years of employment <span class="citation-link" data-source="1.2">1</span>. After completing 3 years of service, PTO accrual increases to 20 days per year <span class="citation-link" data-source="1.2">1</span>. Important note: PTO requests must be submitted at least 2 weeks in advance for periods exceeding 3 consecutive days <span class="citation-link" data-source="1.2">1</span>.`,
-                citations: ['1.2']
-            };
-        }
-        
-        if (lowerQuery.includes('password') || lowerQuery.includes('security') || lowerQuery.includes('mfa')) {
-            return {
-                type: 'assistant',
-                content: `The IT Security Guidelines specify strict password requirements <span class="citation-link" data-source="2.1">1</span>. All passwords must be a minimum of 12 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character. Passwords expire every 90 days and cannot repeat the last 10 passwords used <span class="citation-link" data-source="2.1">1</span>. Additionally, multi-factor authentication (MFA) is required for all company systems <span class="citation-link" data-source="2.1">1</span>. For data handling, refer to the data classification guidelines which require AES-256 encryption for restricted data <span class="citation-link" data-source="2.2">2</span>.`,
-                citations: ['2.1', '2.2']
-            };
-        }
-        
-        if (lowerQuery.includes('api') || lowerQuery.includes('rate limit')) {
-            return {
-                type: 'assistant',
-                content: `According to the Product Specifications, the standard tier allows 1,000 requests per minute with burst capacity of 2,000 requests <span class="citation-link" data-source="3.1">1</span>. Enterprise tier customers receive 10,000 requests per minute with dedicated infrastructure <span class="citation-link" data-source="3.1">1</span>. Rate limit information is included in response headers for monitoring purposes. Regarding uptime, the SLA guarantees 99.9% availability for production APIs <span class="citation-link" data-source="3.2">2</span>.`,
-                citations: ['3.1', '3.2']
-            };
-        }
-        
-        if (lowerQuery.includes('benefits') || lowerQuery.includes('enrollment') || lowerQuery.includes('insurance')) {
-            return {
-                type: 'assistant',
-                content: `Benefits enrollment information is covered in Section 6.3 of the Employee Handbook <span class="citation-link" data-source="1.3">1</span>. Open enrollment occurs annually in November. New hires have a 30-day window from their start date to complete enrollment <span class="citation-link" data-source="1.3">1</span>. Changes outside the standard enrollment period require a qualifying life event, such as marriage, birth of a child, or loss of other coverage <span class="citation-link" data-source="1.3">1</span>.`,
-                citations: ['1.3']
-            };
-        }
-        
-        // Default response
-        return {
-            type: 'assistant',
-            content: `I searched through the available documents but couldn't find specific information matching your query. The documents I have access to include the Employee Handbook (policies on remote work, PTO, benefits), IT Security Guidelines (password requirements, data classification), and Product Specifications (API limits, SLA commitments). Could you rephrase your question or ask about one of these topics?`,
-            citations: []
-        };
-    },
-    
-    // Render messages
-    renderMessages() {
-        const container = document.getElementById('rag-messages');
-        if (!container) return;
-        
-        container.innerHTML = this.state.messages.map(msg => `
-            <div class="message message-${msg.type}">
-                <div class="message-content">
-                    ${msg.content}
-                </div>
-            </div>
-        `).join('');
-        
-        // Add citation click handlers
-        container.querySelectorAll('.citation-link').forEach(link => {
-            link.addEventListener('click', () => {
-                const sourceId = link.dataset.source;
-                this.highlightSource(sourceId);
+        if (citations && citations.length > 0) {
+            html += '<div class="citations-list"><div class="citations-header">📎 Sources</div>';
+            citations.forEach((cite, i) => {
+                const doc = this.industries[this.state.currentIndustry].documents.find(d => d.id === cite.doc);
+                html += `<div class="citation-item" data-citation="${i}">
+                    <span class="citation-number">[${i + 1}]</span>
+                    <div class="citation-details">
+                        <span class="citation-doc">${doc?.title || cite.doc}</span>
+                        <span class="citation-loc">${cite.section} • Page ${cite.page}</span>
+                        <span class="citation-text">"${cite.text}"</span>
+                    </div>
+                </div>`;
             });
-        });
-        
-        // Scroll to bottom
-        container.scrollTop = container.scrollHeight;
-    },
-    
-    // Render sources panel
-    renderSources(citationIds) {
-        const container = document.getElementById('sources-list');
-        if (!container || !citationIds.length) return;
-        
-        const sources = citationIds.map((id, index) => {
-            const [docId, sectionId] = id.split('.');
-            const doc = this.documents.find(d => d.id === parseInt(docId));
-            const section = doc?.sections.find(s => s.id === id);
-            
-            if (!section) return '';
-            
-            return `
-                <div class="source-card" data-source-id="${id}">
-                    <div class="source-header">
-                        <span class="source-number">${index + 1}</span>
-                        <span class="source-title">${section.section}</span>
-                    </div>
-                    <div class="source-meta">
-                        ${doc.title} • Page ${section.page} • ${doc.updatedAt}
-                    </div>
-                    <div class="source-excerpt">
-                        "${section.content}"
-                    </div>
-                </div>
-            `;
-        }).join('');
-        
-        container.innerHTML = sources;
-        
-        // Add click handlers
-        container.querySelectorAll('.source-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const sourceId = card.dataset.sourceId;
-                this.highlightSource(sourceId);
-            });
-        });
-    },
-    
-    // Highlight source
-    highlightSource(sourceId) {
-        // Remove previous active state
-        document.querySelectorAll('.source-card').forEach(card => {
-            card.classList.remove('active');
-        });
-        
-        // Add active state to clicked source
-        const sourceCard = document.querySelector(`.source-card[data-source-id="${sourceId}"]`);
-        if (sourceCard) {
-            sourceCard.classList.add('active');
-            sourceCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            html += '</div>';
         }
-        
-        this.state.activeSourceId = sourceId;
+
+        messageDiv.innerHTML = html;
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        this.state.messages.push({ role, content, citations, timestamp: new Date().toISOString() });
     },
-    
-    // Show typing indicator
-    showTypingIndicator() {
-        const container = document.getElementById('rag-messages');
-        if (!container) return;
-        
-        const indicator = document.createElement('div');
-        indicator.className = 'message message-assistant typing-indicator';
-        indicator.innerHTML = `
-            <div class="message-content">
-                <div class="typing-dots">
+
+    async generateResponse(query) {
+        const chatContainer = document.getElementById('chat-messages');
+        if (!chatContainer) return;
+
+        // Show enhanced typing indicator with loader
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chat-message assistant-message typing';
+        typingDiv.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 0.5rem;">
+                <div class="sk-loader-dots">
                     <span></span><span></span><span></span>
+                </div>
+                <div style="font-size: 0.85rem; color: #666;">
+                    <span class="loading-status">Searching knowledge base...</span>
                 </div>
             </div>
         `;
-        container.appendChild(indicator);
-        container.scrollTop = container.scrollHeight;
-    },
-    
-    // Hide typing indicator
-    hideTypingIndicator() {
-        const indicator = document.querySelector('.typing-indicator');
-        if (indicator) indicator.remove();
-    },
-    
-    // Export audit log
-    exportAuditLog() {
-        const log = {
-            timestamp: new Date().toISOString(),
-            session_id: Utils.generateId(),
-            queries: this.state.messages.filter(m => m.type === 'user').map(m => m.content),
-            citations_used: [...new Set(this.state.messages.flatMap(m => m.citations || []))],
-            documents_accessed: this.documents.map(d => ({ id: d.id, title: d.title }))
-        };
+        chatContainer.appendChild(typingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Simulate search steps with random delay
+        const delay = Loader.getRandomDelay();
+        const steps = ['Searching knowledge base...', 'Computing embeddings...', 'Ranking passages...', 'Generating response...'];
+        const statusEl = typingDiv.querySelector('.loading-status');
         
-        const blob = new Blob([JSON.stringify(log, null, 2)], { type: 'application/json' });
+        for (let i = 0; i < steps.length; i++) {
+            await Utils.sleep(delay / steps.length);
+            if (statusEl) statusEl.textContent = steps[i];
+        }
+
+        const config = this.industries[this.state.currentIndustry];
+        let response, citations;
+
+        // Find matching response or generate default
+        const matchedQuery = Object.keys(config.responses).find(q => 
+            query.toLowerCase().includes(q.toLowerCase().split(' ').slice(0, 3).join(' '))
+        );
+
+        if (matchedQuery) {
+            response = config.responses[matchedQuery].answer;
+            citations = config.responses[matchedQuery].citations;
+        } else {
+            response = `Based on the ${config.name} knowledge base, I found relevant information across ${config.documents.length} documents. The most relevant sections suggest reviewing the ${config.documents[0].title} for detailed guidance on this topic. Would you like me to search for more specific information?`;
+            citations = [{ 
+                doc: config.documents[0].id, 
+                section: 'Multiple sections', 
+                page: 1, 
+                text: 'Relevant content found across multiple sections' 
+            }];
+        }
+
+        // Remove typing indicator
+        typingDiv.remove();
+
+        // Add response with citations
+        this.addMessage('assistant', response, citations);
+
+        // Update sources panel
+        this.updateSourcesPanel(citations);
+    },
+
+    updateSourcesPanel(citations) {
+        const panel = document.getElementById('sources-panel');
+        if (!panel) return;
+
+        const config = this.industries[this.state.currentIndustry];
+        let html = `<div class="sources-header">
+            <h4>Retrieved Sources</h4>
+            <span class="source-count">${citations.length} references</span>
+        </div>`;
+
+        html += '<div class="sources-list">';
+        citations.forEach((cite, i) => {
+            const doc = config.documents.find(d => d.id === cite.doc);
+            html += `<div class="source-item">
+                <div class="source-number">[${i + 1}]</div>
+                <div class="source-details">
+                    <div class="source-title">${doc?.title || cite.doc}</div>
+                    <div class="source-location">${cite.section} • Page ${cite.page}</div>
+                    <div class="source-preview">"${cite.text}"</div>
+                </div>
+            </div>`;
+        });
+        html += '</div>';
+
+        html += `<div class="audit-info">
+            <div class="audit-badge">✓ Full Audit Trail Available</div>
+            <div class="audit-note">All queries and source retrievals are logged for compliance</div>
+        </div>`;
+
+        panel.innerHTML = html;
+    },
+
+    clearChat() {
+        const chatContainer = document.getElementById('chat-messages');
+        if (chatContainer) chatContainer.innerHTML = '';
+        
+        const sourcesPanel = document.getElementById('sources-panel');
+        if (sourcesPanel) {
+            sourcesPanel.innerHTML = '<div class="sources-empty">Ask a question to see retrieved sources</div>';
+        }
+    },
+
+    exportAuditLog() {
+        const config = this.industries[this.state.currentIndustry];
+        const auditLog = {
+            exportDate: new Date().toISOString(),
+            industry: config.name,
+            knowledgeBase: config.documents.map(d => d.title),
+            conversations: this.state.messages,
+            systemInfo: {
+                model: 'Mistral 7B (Self-hosted)',
+                ragMethod: 'Vector similarity search',
+                embeddingModel: 'all-MiniLM-L6-v2'
+            }
+        };
+
+        const blob = new Blob([JSON.stringify(auditLog, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `rag-audit-log-${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `rag-audit-log-${Date.now()}.json`;
         a.click();
-        
+        URL.revokeObjectURL(url);
+
         Toast.success('Audit log exported successfully');
     }
 };
 
-// Add typing indicator styles
-const style = document.createElement('style');
-style.textContent = `
-    .typing-dots {
-        display: flex;
-        gap: 4px;
-        padding: 8px 0;
-    }
-    .typing-dots span {
-        width: 8px;
-        height: 8px;
-        background: var(--color-primary);
-        border-radius: 50%;
-        animation: typingBounce 1.4s infinite ease-in-out both;
-    }
-    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-    @keyframes typingBounce {
-        0%, 80%, 100% { transform: scale(0); }
-        40% { transform: scale(1); }
-    }
-    .document-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px;
-        background: var(--color-background);
-        border-radius: 8px;
-        margin-bottom: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .document-item:hover {
-        background: white;
-        box-shadow: var(--shadow-md);
-    }
-    .document-icon {
-        font-size: 24px;
-    }
-    .document-title {
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: var(--color-dark);
-    }
-    .document-meta {
-        font-size: 0.75rem;
-        color: var(--color-text-light);
-    }
-`;
-document.head.appendChild(style);
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    RAGCitations.init();
-});
-
+document.addEventListener('DOMContentLoaded', () => RAGCitations.init());
 window.RAGCitations = RAGCitations;

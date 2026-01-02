@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Cost Ticker | SLM Command Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/components.css">
@@ -14,178 +13,264 @@
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">
-                    <h2>SLM Command Center</h2>
-                </div>
+            <div class="sidebar-brand">
+                <img src="../assets/shellkode.png" alt="ShellKode" class="logo-img">
             </div>
             <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">Overview</div>
-                    <a class="nav-item" data-module="dashboard">
-                        <span class="nav-item-icon">📊</span>
-                        <span>Dashboard</span>
-                    </a>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">Capabilities</div>
-                    <a class="nav-item active" data-module="cost-ticker">
-                        <span class="nav-item-icon">💰</span>
-                        <span>Live Cost Ticker</span>
-                        <span class="nav-item-badge">Live</span>
-                    </a>
-                    <a class="nav-item" data-module="rag-citations">
-                        <span class="nav-item-icon">📄</span>
-                        <span>RAG with Citations</span>
-                    </a>
-                    <a class="nav-item" data-module="guardrails">
-                        <span class="nav-item-icon">🛡️</span>
-                        <span>Guardrails Control</span>
-                    </a>
-                    <a class="nav-item" data-module="model-arena">
-                        <span class="nav-item-icon">⚔️</span>
-                        <span>Model Arena</span>
-                    </a>
-                    <a class="nav-item" data-module="fine-tuning">
-                        <span class="nav-item-icon">🎯</span>
-                        <span>Fine-Tuning Preview</span>
-                    </a>
-                    <a class="nav-item" data-module="infra-recommender">
-                        <span class="nav-item-icon">🔧</span>
-                        <span>Infra Recommender</span>
-                    </a>
-                </div>
+                <a href="#" class="nav-item" data-module="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active" data-module="cost-ticker">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Cost Ticker</span>
+                    <span class="nav-badge">Live</span>
+                </a>
+                <a href="#" class="nav-item" data-module="rag-citations">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-label">RAG Citations</span>
+                </a>
+                <a href="#" class="nav-item" data-module="guardrails">
+                    <span class="nav-icon">🛡️</span>
+                    <span class="nav-label">Guardrails</span>
+                </a>
+                <a href="#" class="nav-item" data-module="model-arena">
+                    <span class="nav-icon">⚔️</span>
+                    <span class="nav-label">Model Arena</span>
+                </a>
+                <a href="#" class="nav-item" data-module="model-lab">
+                    <span class="nav-icon">🧪</span>
+                    <span class="nav-label">Model Dev Lab</span><span class="nav-badge">Core</span>
+                </a>
+                <a href="#" class="nav-item" data-module="infra-recommender">
+                    <span class="nav-icon">🏗️</span>
+                    <span class="nav-label">Infrastructure</span>
+                </a>
+                <a href="#" class="nav-item" data-module="data-sovereignty">
+                    <span class="nav-icon">🔒</span>
+                    <span class="nav-label">Data Sovereignty</span>
+                    <span class="nav-badge new">New</span>
+                </a>
             </nav>
         </aside>
-        
+
         <!-- Main Content -->
         <main class="main-content">
-            <header class="top-header">
+            <header class="content-header">
                 <div class="header-left">
-                    <h1 class="page-title">Live Cost Ticker</h1>
-                    <div class="breadcrumb">
-                        <span>Capabilities</span>
-                        <span class="breadcrumb-separator">/</span>
-                        <span>Cost Comparison</span>
-                    </div>
+                    <h1>Live Cost Ticker</h1>
+                    <nav class="breadcrumb">
+                        <span>SLM Command Center</span>
+                        <span class="separator">/</span>
+                        <span class="current">Cost Comparison</span>
+                    </nav>
                 </div>
                 <div class="header-right">
-                    <span id="current-datetime" class="text-muted text-sm"></span>
-                    <img src="../assets/shellkode.png" alt="ShellKode" class="header-logo">
+                    <span class="datetime" id="current-datetime"></span>
                 </div>
             </header>
-            
-            <div class="content-area">
+
+            <div class="page-content">
+                <!-- Industry Selector -->
+                <section class="module-section">
+                    <h3>Select Industry</h3>
+                    <p id="industry-description" class="section-description">General enterprise use cases</p>
+                    <div id="industry-selector"></div>
+                </section>
+
                 <!-- Query Input -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="flex gap-3 items-center">
-                            <input type="text" id="query-input" class="form-input" 
-                                   placeholder="Enter a query to compare costs (e.g., 'What are the benefits of SLMs?')"
-                                   value="What are the key benefits of using Small Language Models for enterprise applications?">
-                            <button id="run-comparison-btn" class="btn btn-primary">
-                                ▶️ Run Comparison
-                            </button>
-                        </div>
+                <section class="module-section">
+                    <h3>Test Query</h3>
+                    <div class="input-group">
+                        <input type="text" id="query-input" class="form-input" placeholder="Enter a query to compare costs...">
+                        <button id="run-comparison-btn" class="btn-primary">Run Comparison</button>
                     </div>
-                </div>
-                
-                <!-- Cost Comparison Panels -->
-                <div class="cost-comparison-container">
+                    <div id="sample-queries" class="sample-queries"></div>
+                </section>
+
+                <!-- Cost Comparison -->
+                <section class="comparison-grid">
                     <!-- GPT-4 Panel -->
-                    <div class="model-panel gpt">
-                        <div class="model-panel-header">
-                            <span class="model-name">GPT-4 API</span>
-                            <span class="model-badge">OpenAI</span>
+                    <div class="comparison-panel gpt-panel">
+                        <div class="panel-header">
+                            <h4>☁️ API Provider</h4>
+                            <select id="gpt-model-select" class="model-select">
+                                <option value="gpt-4">GPT-4 ($30/$60 per 1M)</option>
+                                <option value="gpt-4o">GPT-4o ($5/$15 per 1M)</option>
+                                <option value="claude-3">Claude 3.5 ($15/$75 per 1M)</option>
+                            </select>
                         </div>
                         <div class="cost-display">
-                            <div class="cost-value" id="gpt-cost">$0.0000</div>
-                            <div class="cost-label">Cost This Query</div>
+                            <span class="cost-label">Query Cost</span>
+                            <span id="gpt-cost" class="cost-value">$0.0000</span>
                         </div>
-                        <div class="response-area">
-                            <div class="response-text" id="gpt-response">
-                                <span class="text-muted">Response will appear here...</span>
-                            </div>
+                        <div class="response-area" id="gpt-response">
+                            <span class="placeholder">Response will appear here...</span>
                         </div>
                     </div>
-                    
+
                     <!-- SLM Panel -->
-                    <div class="model-panel slm">
-                        <div class="model-panel-header">
-                            <span class="model-name">Mistral 7B (Self-hosted)</span>
-                            <span class="model-badge">g5.2xlarge</span>
+                    <div class="comparison-panel slm-panel">
+                        <div class="panel-header">
+                            <h4>🏆 ShellKode Self-Hosted</h4>
+                            <select id="slm-model-select" class="model-select">
+                                <optgroup label="ShellKode Fine-Tuned">
+                                    <option value="sk-clinical-7b">SK-Clinical-7B (+35%)</option>
+                                    <option value="sk-finance-7b">SK-Finance-7B (+28%)</option>
+                                    <option value="sk-legal-3b">SK-Legal-3B (+41%)</option>
+                                    <option value="sk-commerce-3b">SK-Commerce-3B (+38%)</option>
+                                </optgroup>
+                                <optgroup label="Base Models">
+                                    <option value="mistral-7b">Mistral 7B (Base)</option>
+                                    <option value="phi-3">Phi-3.5 Mini (Base)</option>
+                                    <option value="llama-3.2">Llama 3.2 3B (Base)</option>
+                                </optgroup>
+                            </select>
                         </div>
                         <div class="cost-display">
-                            <div class="cost-value" id="slm-cost">$0.000000</div>
-                            <div class="cost-label">Cost This Query</div>
+                            <span class="cost-label">Query Cost</span>
+                            <span id="slm-cost" class="cost-value highlight">$0.000000</span>
                         </div>
-                        <div class="response-area">
-                            <div class="response-text" id="slm-response">
-                                <span class="text-muted">Response will appear here...</span>
-                            </div>
+                        <div class="response-area" id="slm-response">
+                            <span class="placeholder">Response will appear here...</span>
                         </div>
                     </div>
-                </div>
-                
+                </section>
+
                 <!-- Volume Calculator -->
-                <div class="grid grid-cols-2 gap-4 mt-4">
-                    <div class="volume-control card">
-                        <div class="card-header">
-                            <h4 class="card-title">📊 Daily Query Volume</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-muted">Queries per day:</span>
-                                <span class="font-bold" id="volume-display">10K</span>
-                            </div>
-                            <input type="range" id="volume-slider" class="volume-slider" 
-                                   min="1000" max="1000000" value="10000" step="1000">
-                            <div class="flex justify-between text-xs text-muted mt-2">
-                                <span>1K</span>
-                                <span>100K</span>
-                                <span>1M</span>
-                            </div>
-                        </div>
+                <section class="module-section">
+                    <h3>Volume Projection</h3>
+                    <div class="volume-slider-container">
+                        <label>Daily Query Volume: <strong id="volume-display">10,000</strong></label>
+                        <input type="range" id="volume-slider" min="1000" max="1000000" value="10000" step="1000">
                     </div>
-                    
-                    <div class="savings-calculator">
-                        <div class="savings-title">💰 Monthly Savings</div>
-                        <div class="savings-value" id="monthly-savings">$0</div>
-                        <div class="savings-period">
-                            <span id="savings-percent">0%</span> cost reduction vs GPT-4
-                        </div>
+                    <p id="industry-note" class="industry-note"></p>
+                </section>
+
+                <!-- Cost Projection Grid -->
+                <section class="projection-grid">
+                    <div class="projection-card">
+                        <span class="projection-label">GPT-4 Monthly</span>
+                        <span id="gpt-monthly-cost" class="projection-value">$0.00</span>
                     </div>
-                </div>
-                
-                <!-- Monthly Projections -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h4 class="card-title">📈 Monthly Cost Projection</h4>
+                    <div class="projection-card highlight">
+                        <span class="projection-label">SLM Monthly</span>
+                        <span id="slm-monthly-cost" class="projection-value">$0.00</span>
                     </div>
-                    <div class="card-body">
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="text-center p-4" style="background: rgba(239,68,68,0.1); border-radius: 8px;">
-                                <div class="text-muted text-sm mb-2">GPT-4 API</div>
-                                <div class="text-xl font-bold text-danger" id="gpt-monthly-cost">$0</div>
-                                <div class="text-xs text-muted">per month</div>
-                            </div>
-                            <div class="text-center p-4" style="background: rgba(16,185,129,0.1); border-radius: 8px;">
-                                <div class="text-muted text-sm mb-2">Self-hosted SLM</div>
-                                <div class="text-xl font-bold text-success" id="slm-monthly-cost">$0</div>
-                                <div class="text-xs text-muted">per month (incl. infra)</div>
-                            </div>
-                            <div class="text-center p-4" style="background: rgba(77,170,232,0.1); border-radius: 8px;">
-                                <div class="text-muted text-sm mb-2">Annual Savings</div>
-                                <div class="text-xl font-bold text-primary" id="annual-savings">$0</div>
-                                <div class="text-xs text-muted">per year</div>
-                            </div>
-                        </div>
+                    <div class="projection-card savings">
+                        <span class="projection-label">Monthly Savings</span>
+                        <span id="monthly-savings" class="projection-value">$0</span>
+                        <span id="savings-percent" class="savings-badge">0%</span>
                     </div>
-                </div>
+                    <div class="projection-card">
+                        <span class="projection-label">Annual Savings</span>
+                        <span id="annual-savings" class="projection-value">$0</span>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
-    
+
+    <style>
+        .industry-tabs { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+        .industry-tab {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 1.5rem; border: 2px solid #e0e0e0;
+            border-radius: 8px; background: white; cursor: pointer;
+            transition: all 0.2s; font-size: 0.95rem;
+        }
+        .industry-tab:hover { border-color: #4daae8; background: #f8fbff; }
+        .industry-tab.active { border-color: #146eb4; background: #f0f7ff; box-shadow: 0 2px 8px rgba(20, 110, 180, 0.15); }
+        .industry-icon { font-size: 1.25rem; }
+        .industry-name { font-weight: 500; }
+        
+        .input-group { display: flex; gap: 1rem; align-items: center; }
+        .input-group .form-input { 
+            flex: 1; padding: 0.875rem 1rem; border: 2px solid #e0e0e0; 
+            border-radius: 10px; font-size: 0.95rem; transition: all 0.2s;
+        }
+        .input-group .form-input:focus { border-color: #146eb4; outline: none; box-shadow: 0 0 0 3px rgba(20, 110, 180, 0.1); }
+        .btn-primary {
+            padding: 0.875rem 1.75rem; 
+            background: linear-gradient(135deg, #146eb4 0%, #0d5a96 100%);
+            color: white; border: none; border-radius: 10px; font-weight: 600; 
+            cursor: pointer; transition: all 0.2s; font-size: 0.95rem;
+            box-shadow: 0 4px 14px rgba(20, 110, 180, 0.25);
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #1a7ec9 0%, #0f6aa8 100%);
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(20, 110, 180, 0.35); 
+        }
+        
+        .sample-queries { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+        .sample-query-btn {
+            padding: 0.5rem 1rem; background: #f8f9fa; border: 1px solid #e0e0e0;
+            border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+        }
+        .sample-query-btn:hover { background: #e9ecef; border-color: #ccc; }
+        
+        .comparison-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; 
+            margin-bottom: 1.5rem;
+        }
+        .comparison-panel {
+            background: white; border-radius: 16px; padding: 2rem;
+            border: 2px solid #e0e0e0; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+        }
+        .comparison-panel:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); }
+        .gpt-panel { border-color: #dc3545; border-left-width: 4px; }
+        .slm-panel { border-color: #28a745; border-left-width: 4px; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee; }
+        .panel-header h4 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+        .model-select { padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #ddd; font-size: 0.9rem; }
+        .cost-display { text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); border-radius: 12px; margin-bottom: 1.5rem; }
+        .cost-label { display: block; font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .cost-value { font-size: 2.5rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #333; }
+        .cost-value.highlight { color: #28a745; }
+        .response-area {
+            min-height: 160px; padding: 1.25rem; background: #f8f9fa;
+            border-radius: 10px; font-size: 0.9rem; line-height: 1.7;
+            border: 1px solid #eee;
+        }
+        .response-area .placeholder { color: #999; font-style: italic; }
+        
+        .volume-slider-container { margin: 1rem 0; }
+        .volume-slider-container label { font-weight: 500; }
+        .volume-slider-container input[type="range"] { 
+            width: 100%; margin-top: 0.75rem; height: 8px; 
+            -webkit-appearance: none; background: #e0e0e0; border-radius: 4px;
+        }
+        .volume-slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 20px; height: 20px;
+            background: #146eb4; border-radius: 50%; cursor: pointer;
+            box-shadow: 0 2px 6px rgba(20, 110, 180, 0.4);
+        }
+        .industry-note { background: linear-gradient(135deg, #e3f2fd 0%, #f0f7ff 100%); padding: 1rem 1.25rem; border-radius: 10px; margin-top: 1rem; border-left: 4px solid #146eb4; }
+        
+        .projection-grid { 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
+            background: white; border-radius: 16px; padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); border: 1px solid #e8eaed;
+        }
+        .projection-card {
+            padding: 1.25rem; border-radius: 12px;
+            text-align: center; background: #f8f9fa;
+        }
+        .projection-card.highlight { background: linear-gradient(135deg, #e8f5e9 0%, #f0fff4 100%); }
+        .projection-card.savings { background: linear-gradient(135deg, #fff8e1 0%, #fffde7 100%); }
+        .projection-label { display: block; font-size: 0.8rem; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .projection-value { font-size: 1.5rem; font-weight: 700; font-family: 'Outfit', sans-serif; color: #333; }
+        .savings-badge {
+            display: inline-block; margin-top: 0.5rem; padding: 0.3rem 0.75rem;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; 
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+        }
+        .typing-cursor { animation: blink 0.7s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+    </style>
+
     <script src="../js/main.js"></script>
     <script src="../js/cost-ticker.js"></script>
 </body>

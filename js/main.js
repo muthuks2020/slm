@@ -60,12 +60,14 @@ function navigateToModule(module) {
     // Navigate to page
     const modulePages = {
         'dashboard': basePath + 'index.html',
+        'model-lab': basePath + 'pages/model-lab.html',
         'cost-ticker': basePath + 'pages/cost-ticker.html',
         'rag-citations': basePath + 'pages/rag-citations.html',
         'guardrails': basePath + 'pages/guardrails.html',
         'model-arena': basePath + 'pages/model-arena.html',
-        'fine-tuning': basePath + 'pages/fine-tuning.html',
-        'infra-recommender': basePath + 'pages/infra-recommender.html'
+        'fine-tuning': basePath + 'pages/model-lab.html',
+        'infra-recommender': basePath + 'pages/infra-recommender.html',
+        'data-sovereignty': basePath + 'pages/data-sovereignty.html'
     };
     
     if (modulePages[module]) {
@@ -380,9 +382,204 @@ const Loading = {
     }
 };
 
+// Advanced Loader System
+const Loader = {
+    // Random delay between 3-5 seconds
+    getRandomDelay() {
+        return Math.floor(Math.random() * 2000) + 3000; // 3000-5000ms
+    },
+    
+    // Processing messages for different contexts
+    messages: {
+        model: [
+            'Initializing model inference...',
+            'Loading neural network weights...',
+            'Optimizing GPU allocation...',
+            'Running inference pipeline...',
+            'Processing tokens...',
+            'Generating response...'
+        ],
+        comparison: [
+            'Preparing comparison environment...',
+            'Loading model configurations...',
+            'Running parallel inference...',
+            'Calculating latency metrics...',
+            'Evaluating quality scores...',
+            'Compiling results...'
+        ],
+        analysis: [
+            'Analyzing input data...',
+            'Processing through model...',
+            'Extracting key features...',
+            'Applying domain rules...',
+            'Validating output...',
+            'Formatting results...'
+        ],
+        search: [
+            'Scanning document corpus...',
+            'Computing embeddings...',
+            'Searching vector database...',
+            'Ranking relevant passages...',
+            'Generating citations...',
+            'Preparing response...'
+        ],
+        infrastructure: [
+            'Analyzing requirements...',
+            'Evaluating model options...',
+            'Calculating resource needs...',
+            'Optimizing cost structure...',
+            'Checking compliance...',
+            'Generating recommendation...'
+        ],
+        compliance: [
+            'Scanning for violations...',
+            'Checking guardrail rules...',
+            'Validating content safety...',
+            'Applying industry filters...',
+            'Generating compliance report...',
+            'Finalizing assessment...'
+        ]
+    },
+    
+    // Icons for different contexts
+    icons: {
+        model: '🧠',
+        comparison: '⚔️',
+        analysis: '📊',
+        search: '🔍',
+        infrastructure: '🔧',
+        compliance: '🛡️',
+        cost: '💰',
+        default: '⚡'
+    },
+    
+    // Show loader in a container with steps animation
+    show(container, options = {}) {
+        const {
+            type = 'default',
+            title = 'Processing...',
+            subtitle = '',
+            showSteps = true,
+            stepCount = 4
+        } = options;
+        
+        const messages = this.messages[type] || this.messages.analysis;
+        const icon = this.icons[type] || this.icons.default;
+        const steps = messages.slice(0, stepCount);
+        
+        const loaderHTML = `
+            <div class="sk-section-loader" id="sk-loader-${Date.now()}">
+                <div class="sk-loader-brain">
+                    <div class="sk-loader-brain-ring"></div>
+                    <div class="sk-loader-brain-ring"></div>
+                    <div class="sk-loader-brain-ring"></div>
+                    <span class="sk-loader-brain-icon">${icon}</span>
+                </div>
+                <div class="sk-loader-text">${title}</div>
+                ${subtitle ? `<div class="sk-loader-subtext">${subtitle}</div>` : ''}
+                <div class="sk-loader-progress"></div>
+                ${showSteps ? `
+                    <div class="sk-loader-steps">
+                        ${steps.map((step, i) => `
+                            <div class="sk-loader-step" data-step="${i}">
+                                <span class="sk-loader-step-icon">●</span>
+                                <span>${step}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+        
+        container.innerHTML = loaderHTML;
+        
+        // Animate steps
+        if (showSteps) {
+            const stepElements = container.querySelectorAll('.sk-loader-step');
+            const stepDelay = this.getRandomDelay() / stepCount;
+            
+            stepElements.forEach((step, index) => {
+                setTimeout(() => {
+                    // Mark previous as complete
+                    if (index > 0) {
+                        stepElements[index - 1].classList.remove('active');
+                        stepElements[index - 1].classList.add('complete');
+                        stepElements[index - 1].querySelector('.sk-loader-step-icon').textContent = '✓';
+                    }
+                    step.classList.add('active');
+                }, stepDelay * index);
+            });
+        }
+        
+        return container.querySelector('.sk-section-loader');
+    },
+    
+    // Hide loader
+    hide(container) {
+        const loader = container.querySelector('.sk-section-loader');
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.transform = 'scale(0.95)';
+            setTimeout(() => loader.remove(), 300);
+        }
+    },
+    
+    // Show inline loader (for buttons)
+    showInline(button, text = 'Processing...') {
+        const originalContent = button.innerHTML;
+        const originalWidth = button.offsetWidth;
+        button.disabled = true;
+        button.style.minWidth = originalWidth + 'px';
+        button.innerHTML = `
+            <span class="sk-inline-loader">
+                <span class="sk-spinner"></span>
+                <span>${text}</span>
+            </span>
+        `;
+        
+        return () => {
+            button.innerHTML = originalContent;
+            button.disabled = false;
+            button.style.minWidth = '';
+        };
+    },
+    
+    // Wrap async operation with loader
+    async wrap(container, asyncFn, options = {}) {
+        const delay = options.delay || this.getRandomDelay();
+        this.show(container, options);
+        
+        // Wait for the random delay
+        await new Promise(resolve => setTimeout(resolve, delay));
+        
+        // Execute the actual function
+        const result = await asyncFn();
+        
+        return result;
+    },
+    
+    // Simple dots loader HTML
+    dotsHTML(text = 'Loading') {
+        return `
+            <div style="display: flex; flex-direction: column; align-items: center; padding: 2rem; gap: 1rem;">
+                <div class="sk-loader-dots">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="sk-loader-text">${text}</div>
+            </div>
+        `;
+    },
+    
+    // Card shimmer placeholder
+    shimmerHTML(height = 150) {
+        return `<div class="sk-card-loader" style="height: ${height}px;"></div>`;
+    }
+};
+
 // Export for use in other modules
 window.AppState = AppState;
 window.Utils = Utils;
 window.Toast = Toast;
 window.Modal = Modal;
 window.Loading = Loading;
+window.Loader = Loader;

@@ -1,525 +1,397 @@
 /* ============================================
    SLM Command Center - Model Arena Module
-   Side-by-side model comparison
+   Side-by-side Model Comparison
+   Industry-Specific Benchmarks
    ============================================ */
 
 const ModelArena = {
-    // Available models
-    models: [
-        {
-            id: 'mistral-7b',
-            name: 'Mistral 7B',
-            params: '7B',
-            quantization: 'FP16',
-            avgLatency: 120,
-            tokensPerSec: 52,
-            costPer1K: 0.0004,
-            strengths: ['General purpose', 'RAG', 'Code'],
-            color: '#146eb4'
+    industries: {
+        general: {
+            name: 'General',
+            icon: '🔷',
+            description: 'General purpose comparison',
+            prompts: [
+                { label: 'Summarization', text: 'Summarize the key points of this quarterly business report in 3 bullet points.' },
+                { label: 'Code Generation', text: 'Write a Python function to validate email addresses using regex.' },
+                { label: 'Analysis', text: 'Analyze the pros and cons of remote work policies for enterprise companies.' }
+            ],
+            evaluationCriteria: ['Accuracy', 'Coherence', 'Completeness', 'Relevance']
         },
-        {
-            id: 'phi-3-mini',
-            name: 'Phi-3.5 Mini',
-            params: '3.8B',
-            quantization: 'FP16',
-            avgLatency: 85,
-            tokensPerSec: 78,
-            costPer1K: 0.0003,
-            strengths: ['Code', 'Reasoning', 'Edge'],
-            color: '#4daae8'
+        healthcare: {
+            name: 'Healthcare',
+            icon: '🏥',
+            description: 'Clinical accuracy comparison',
+            prompts: [
+                { label: 'Clinical Summary', text: 'Summarize this patient presentation: 65yo M with HTN, presenting with substernal chest pain radiating to left arm, diaphoresis, and shortness of breath x 2 hours.' },
+                { label: 'ICD-10 Coding', text: 'Suggest appropriate ICD-10 codes for: Type 2 diabetes with diabetic chronic kidney disease, stage 4.' },
+                { label: 'Drug Interaction', text: 'Identify potential interactions between warfarin, aspirin, and omeprazole.' }
+            ],
+            evaluationCriteria: ['Medical Accuracy', 'Terminology', 'Safety Awareness', 'HIPAA Compliance']
         },
-        {
-            id: 'llama-3.2',
-            name: 'Llama 3.2 3B',
-            params: '3B',
-            quantization: 'INT4',
-            avgLatency: 65,
-            tokensPerSec: 95,
-            costPer1K: 0.0002,
-            strengths: ['Mobile', 'Agents', 'Speed'],
-            color: '#10b981'
+        financial: {
+            name: 'Financial Services',
+            icon: '🏦',
+            description: 'Financial accuracy comparison',
+            prompts: [
+                { label: 'Risk Analysis', text: 'Analyze the risk factors from this SEC 10-K excerpt regarding market concentration in APAC region with 40% revenue exposure.' },
+                { label: 'Earnings Summary', text: 'Summarize key metrics from Q3 earnings: Revenue $2.4B (+15% YoY), EPS $1.23 vs $1.18 expected, gross margin 42.3%.' },
+                { label: 'Compliance Check', text: 'Review this client communication for potential compliance issues: "This investment is guaranteed to double your money within 6 months."' }
+            ],
+            evaluationCriteria: ['Numerical Accuracy', 'Regulatory Awareness', 'Risk Identification', 'Disclaimer Usage']
         },
-        {
-            id: 'qwen-2.5',
-            name: 'Qwen 2.5 7B',
-            params: '7B',
-            quantization: 'FP16',
-            avgLatency: 130,
-            tokensPerSec: 48,
-            costPer1K: 0.0004,
-            strengths: ['Multilingual', 'Code', 'Long context'],
-            color: '#f59e0b'
+        retail: {
+            name: 'Retail & E-commerce',
+            icon: '🛒',
+            description: 'Product content comparison',
+            prompts: [
+                { label: 'Product Description', text: 'Write an SEO-optimized product description for wireless noise-canceling headphones with 30-hour battery life.' },
+                { label: 'Review Analysis', text: 'Analyze sentiment from these reviews: "Great sound but uncomfortable after 2 hours", "Best headphones ever, worth every penny", "Good but not worth $300"' },
+                { label: 'Translation', text: 'Translate this product title and description to Spanish: "Premium Wireless Earbuds - Crystal clear sound with active noise cancellation"' }
+            ],
+            evaluationCriteria: ['Brand Voice', 'SEO Quality', 'Accuracy', 'Engagement']
+        },
+        customer_service: {
+            name: 'Customer Service',
+            icon: '💬',
+            description: 'Support response comparison',
+            prompts: [
+                { label: 'Ticket Response', text: 'Draft a response to: "I was charged twice for my subscription this month and I want a refund immediately!"' },
+                { label: 'Knowledge Search', text: 'Find relevant KB articles for: Customer unable to reset password, email not receiving reset link' },
+                { label: 'Escalation Decision', text: 'Determine if this requires escalation: "This is the third time calling about the same issue. If not resolved today, I will cancel and post negative reviews everywhere."' }
+            ],
+            evaluationCriteria: ['Empathy', 'Resolution Quality', 'Policy Adherence', 'Escalation Accuracy']
         }
-    ],
-    
-    // Selected models for comparison
-    selectedModels: ['mistral-7b', 'phi-3-mini', 'llama-3.2'],
-    
-    // Quantization options
-    quantOptions: ['FP16', 'INT8', 'INT4'],
-    currentQuant: 'FP16',
-    
-    // State
+    },
+
+    models: {
+        // ShellKode Fine-Tuned Models
+        'sk-clinical-7b': { name: 'SK-Clinical-7B', params: '7B', quantization: 'FP16', vram: '14GB', speed: 'Fast', type: 'shellkode', domain: 'healthcare', improvement: '+35%' },
+        'sk-finance-7b': { name: 'SK-Finance-7B', params: '7B', quantization: 'FP16', vram: '14GB', speed: 'Fast', type: 'shellkode', domain: 'financial', improvement: '+28%' },
+        'sk-legal-3b': { name: 'SK-Legal-3B', params: '3.8B', quantization: 'FP16', vram: '8GB', speed: 'Very Fast', type: 'shellkode', domain: 'legal', improvement: '+41%' },
+        'sk-commerce-3b': { name: 'SK-Commerce-3B', params: '3B', quantization: 'FP16', vram: '6GB', speed: 'Very Fast', type: 'shellkode', domain: 'retail', improvement: '+38%' },
+        // Base Models
+        'mistral-7b': { name: 'Mistral 7B', params: '7B', quantization: 'FP16', vram: '14GB', speed: 'Fast', type: 'base' },
+        'phi-3.5': { name: 'Phi-3.5 Mini', params: '3.8B', quantization: 'FP16', vram: '8GB', speed: 'Very Fast', type: 'base' },
+        'llama-3.2-3b': { name: 'Llama 3.2 3B', params: '3B', quantization: 'FP16', vram: '6GB', speed: 'Very Fast', type: 'base' },
+        'qwen-2.5-7b': { name: 'Qwen 2.5 7B', params: '7B', quantization: 'FP16', vram: '14GB', speed: 'Fast', type: 'base' },
+        'gemma-2-9b': { name: 'Gemma 2 9B', params: '9B', quantization: 'INT8', vram: '10GB', speed: 'Medium', type: 'base' }
+    },
+
     state: {
+        currentIndustry: 'general',
+        selectedModels: ['sk-clinical-7b', 'mistral-7b'],
+        quantization: 'FP16',
         isRunning: false,
-        currentQuery: '',
-        results: [],
-        comparisonHistory: []
+        results: []
     },
-    
-    // Sample responses for demo
-    sampleResponses: {
-        'mistral-7b': {
-            default: `Small Language Models (SLMs) offer compelling advantages for enterprise deployments. They provide significant cost savings—typically 3-23x lower than frontier models like GPT-4. SLMs enable complete data sovereignty, keeping sensitive data within your infrastructure. They're highly customizable through fine-tuning on domain-specific data, and offer predictable, fixed infrastructure costs without surprise API bills.
 
-Key considerations include model selection based on your specific use case, proper quantization for optimal performance-cost tradeoffs, and establishing robust evaluation metrics before deployment.`,
-            code: `Here's a Python implementation for connecting to a vLLM endpoint:
-
-\`\`\`python
-import openai
-
-client = openai.OpenAI(
-    base_url="http://localhost:8000/v1",
-    api_key="not-needed"
-)
-
-response = client.chat.completions.create(
-    model="mistral-7b",
-    messages=[{"role": "user", "content": "Hello"}],
-    temperature=0.7,
-    max_tokens=256
-)
-print(response.choices[0].message.content)
-\`\`\``
-        },
-        'phi-3-mini': {
-            default: `SLMs deliver enterprise value through three key dimensions:
-
-1. **Economics**: Self-hosted inference costs ~$0.0003-0.0005 per 1K tokens versus $5-20 for frontier APIs. ROI typically achieved within 3-6 months.
-
-2. **Control**: Full ownership of model weights, deployment configuration, and data handling. No vendor lock-in or rate limiting.
-
-3. **Compliance**: Data never leaves your VPC. Essential for HIPAA, SOC2, GDPR, and financial regulations.
-
-For implementation, I recommend starting with a proof-of-concept on AWS g5.xlarge instances using vLLM for inference optimization.`,
-            code: `Efficient vLLM setup with quantization:
-
-\`\`\`python
-from vllm import LLM, SamplingParams
-
-# Initialize with INT4 quantization
-llm = LLM(
-    model="microsoft/phi-3-mini-4k-instruct",
-    quantization="awq",
-    gpu_memory_utilization=0.90
-)
-
-params = SamplingParams(
-    temperature=0.7,
-    max_tokens=512
-)
-
-outputs = llm.generate(["Your prompt"], params)
-\`\`\``
-        },
-        'llama-3.2': {
-            default: `Enterprise SLM benefits:
-
-• Cost efficiency: 90%+ savings vs API providers
-• Data privacy: On-premise deployment
-• Customization: Domain fine-tuning capability
-• Latency: Sub-100ms response times
-• Reliability: No external dependencies
-
-Llama 3.2 specifically excels at agent workflows and mobile deployments due to its optimized architecture for lower parameter counts.`,
-            code: `Quick Llama 3.2 setup:
-
-\`\`\`python
-from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
-
-model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Llama-3.2-3B-Instruct",
-    torch_dtype=torch.float16,
-    device_map="auto"
-)
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-3B-Instruct")
-
-inputs = tokenizer("Hello!", return_tensors="pt").to("cuda")
-outputs = model.generate(**inputs, max_new_tokens=100)
-\`\`\``
-        },
-        'qwen-2.5': {
-            default: `From a multilingual and long-context perspective, SLMs provide exceptional value:
-
-**Multilingual Support**: Qwen 2.5 natively handles 29+ languages with consistent quality, crucial for global enterprises.
-
-**Extended Context**: 128K token context window enables processing of lengthy documents, contracts, and codebases without chunking.
-
-**Cost Structure**: Self-hosted deployment eliminates per-token API costs, replacing with predictable infrastructure spend of ~$1,500-3,000/month.
-
-**Compliance**: Local deployment ensures data residency requirements are met for international regulations.`,
-            code: `Qwen 2.5 with extended context:
-
-\`\`\`python
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-model = AutoModelForCausalLM.from_pretrained(
-    "Qwen/Qwen2.5-7B-Instruct",
-    torch_dtype="auto",
-    device_map="auto",
-    attn_implementation="flash_attention_2"
-)
-
-# Supports up to 128K context
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
-\`\`\``
-        }
-    },
-    
-    // Initialize module
     init() {
+        this.renderIndustrySelector();
         this.renderModelSelector();
-        this.renderArena();
+        this.renderPrompts();
         this.bindEvents();
     },
-    
-    // Render model selector
+
+    renderIndustrySelector() {
+        const container = document.getElementById('industry-selector');
+        if (!container) return;
+
+        let html = '<div class="industry-tabs">';
+        for (const [key, industry] of Object.entries(this.industries)) {
+            const isActive = key === this.state.currentIndustry ? 'active' : '';
+            html += `<button class="industry-tab ${isActive}" data-industry="${key}">
+                <span class="industry-icon">${industry.icon}</span>
+                <span class="industry-name">${industry.name}</span>
+            </button>`;
+        }
+        html += '</div>';
+        container.innerHTML = html;
+
+        container.querySelectorAll('.industry-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => this.setIndustry(e.currentTarget.dataset.industry));
+        });
+    },
+
+    setIndustry(industry) {
+        this.state.currentIndustry = industry;
+        this.state.results = [];
+
+        document.querySelectorAll('.industry-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.industry === industry);
+        });
+
+        const desc = document.getElementById('industry-description');
+        if (desc) desc.textContent = this.industries[industry].description;
+
+        this.renderPrompts();
+        this.clearResults();
+    },
+
     renderModelSelector() {
         const container = document.getElementById('model-selector');
         if (!container) return;
-        
-        container.innerHTML = this.models.map(model => `
-            <label class="model-checkbox ${this.selectedModels.includes(model.id) ? 'selected' : ''}" data-model="${model.id}">
-                <input type="checkbox" ${this.selectedModels.includes(model.id) ? 'checked' : ''}>
-                <span class="model-checkbox-label">
-                    <span class="model-checkbox-name">${model.name}</span>
-                    <span class="model-checkbox-params">${model.params}</span>
+
+        // Separate ShellKode and base models
+        const shellkodeModels = Object.entries(this.models).filter(([id, m]) => m.type === 'shellkode');
+        const baseModels = Object.entries(this.models).filter(([id, m]) => m.type !== 'shellkode');
+
+        let html = '<div class="model-section-label" style="font-weight: 600; color: #28a745; margin-bottom: 0.5rem;">🏆 ShellKode Fine-Tuned Models</div>';
+        html += '<div class="model-checkboxes" style="margin-bottom: 1.5rem;">';
+        for (const [id, model] of shellkodeModels) {
+            const checked = this.state.selectedModels.includes(id) ? 'checked' : '';
+            html += `<label class="model-checkbox shellkode">
+                <input type="checkbox" value="${id}" ${checked}>
+                <span class="model-info">
+                    <span class="model-name">${model.name} <span class="sk-badge">SK</span></span>
+                    <span class="model-meta">${model.params} • ${model.vram} • <span style="color:#28a745;font-weight:600;">${model.improvement}</span></span>
                 </span>
-            </label>
-        `).join('');
-    },
-    
-    // Render arena
-    renderArena() {
-        const container = document.getElementById('arena-grid');
-        if (!container) return;
-        
-        const selectedModelData = this.models.filter(m => this.selectedModels.includes(m.id));
-        
-        container.innerHTML = selectedModelData.map(model => `
-            <div class="arena-model-card" data-model="${model.id}">
-                <div class="arena-model-header">
-                    <div class="arena-model-name">${model.name}</div>
-                    <span class="arena-model-badge">${model.params}</span>
-                </div>
-                <div class="arena-model-response" id="response-${model.id}">
-                    <span class="text-muted">Response will appear here...</span>
-                </div>
-                <div class="arena-model-metrics">
-                    <div class="arena-metric">
-                        <div class="arena-metric-value" id="latency-${model.id}">--</div>
-                        <div class="arena-metric-label">Latency (ms)</div>
-                    </div>
-                    <div class="arena-metric">
-                        <div class="arena-metric-value" id="tokens-${model.id}">--</div>
-                        <div class="arena-metric-label">Tokens/sec</div>
-                    </div>
-                    <div class="arena-metric">
-                        <div class="arena-metric-value" id="cost-${model.id}">--</div>
-                        <div class="arena-metric-label">Cost/1K</div>
-                    </div>
-                    <div class="arena-metric">
-                        <div class="arena-metric-value" id="quality-${model.id}">--</div>
-                        <div class="arena-metric-label">Quality</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    },
-    
-    // Bind events
-    bindEvents() {
-        // Model checkboxes
-        document.querySelectorAll('.model-checkbox input').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                const modelId = e.target.closest('.model-checkbox').dataset.model;
-                this.toggleModel(modelId, e.target.checked);
-            });
-        });
-        
-        // Run comparison button
-        const runBtn = document.getElementById('run-arena-btn');
-        if (runBtn) {
-            runBtn.addEventListener('click', () => this.runComparison());
+            </label>`;
         }
-        
-        // Query input
-        const queryInput = document.getElementById('arena-query');
-        if (queryInput) {
-            queryInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') this.runComparison();
-            });
+        html += '</div>';
+
+        html += '<div class="model-section-label" style="font-weight: 600; color: #666; margin-bottom: 0.5rem;">Base Models</div>';
+        html += '<div class="model-checkboxes">';
+        for (const [id, model] of baseModels) {
+            const checked = this.state.selectedModels.includes(id) ? 'checked' : '';
+            html += `<label class="model-checkbox">
+                <input type="checkbox" value="${id}" ${checked}>
+                <span class="model-info">
+                    <span class="model-name">${model.name}</span>
+                    <span class="model-meta">${model.params} • ${model.vram}</span>
+                </span>
+            </label>`;
         }
-        
-        // Quantization toggle
-        document.querySelectorAll('.quant-option').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.setQuantization(e.target.dataset.quant);
-            });
-        });
-        
-        // Sample query buttons
-        document.querySelectorAll('.sample-arena-query').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const queryInput = document.getElementById('arena-query');
-                if (queryInput) {
-                    queryInput.value = btn.dataset.query;
-                    this.runComparison();
+        html += '</div>';
+        container.innerHTML = html;
+
+        container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    if (this.state.selectedModels.length < 4) {
+                        this.state.selectedModels.push(e.target.value);
+                    } else {
+                        e.target.checked = false;
+                        Toast.warning('Maximum 4 models can be compared');
+                    }
+                } else {
+                    this.state.selectedModels = this.state.selectedModels.filter(m => m !== e.target.value);
                 }
             });
         });
     },
-    
-    // Toggle model selection
-    toggleModel(modelId, selected) {
-        if (selected) {
-            if (this.selectedModels.length < 4) {
-                this.selectedModels.push(modelId);
-            } else {
-                Toast.warning('Maximum 4 models can be compared');
-                return;
-            }
-        } else {
-            if (this.selectedModels.length > 1) {
-                this.selectedModels = this.selectedModels.filter(id => id !== modelId);
-            } else {
-                Toast.warning('At least 1 model must be selected');
-                return;
-            }
-        }
+
+    renderPrompts() {
+        const container = document.getElementById('prompt-selector');
+        if (!container) return;
+
+        const config = this.industries[this.state.currentIndustry];
+        let html = '<div class="prompt-buttons">';
         
-        this.renderModelSelector();
-        this.renderArena();
-        this.bindEvents();
-    },
-    
-    // Set quantization
-    setQuantization(quant) {
-        this.currentQuant = quant;
-        
-        document.querySelectorAll('.quant-option').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.quant === quant);
+        config.prompts.forEach((prompt, i) => {
+            html += `<button class="prompt-btn" data-index="${i}">${prompt.label}</button>`;
         });
         
-        Toast.info(`Quantization set to ${quant}`);
+        html += '</div>';
+        container.innerHTML = html;
+
+        container.querySelectorAll('.prompt-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                const input = document.getElementById('arena-input');
+                if (input) input.value = config.prompts[index].text;
+                
+                container.querySelectorAll('.prompt-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
     },
-    
-    // Run comparison
+
+    bindEvents() {
+        const runBtn = document.getElementById('run-arena-btn');
+        if (runBtn) runBtn.addEventListener('click', () => this.runComparison());
+
+        const quantSelect = document.getElementById('quantization-select');
+        if (quantSelect) {
+            quantSelect.addEventListener('change', (e) => {
+                this.state.quantization = e.target.value;
+            });
+        }
+    },
+
     async runComparison() {
         if (this.state.isRunning) return;
-        
-        const queryInput = document.getElementById('arena-query');
-        const query = queryInput?.value.trim() || 'What are the benefits of using Small Language Models for enterprise?';
-        
+        if (this.state.selectedModels.length < 2) {
+            Toast.warning('Select at least 2 models to compare');
+            return;
+        }
+
+        const input = document.getElementById('arena-input');
+        if (!input || !input.value.trim()) {
+            Toast.warning('Enter a prompt to compare');
+            return;
+        }
+
+        const prompt = input.value.trim();
         this.state.isRunning = true;
-        this.state.currentQuery = query;
-        
-        // Reset all panels
-        this.selectedModels.forEach(modelId => {
-            const responseEl = document.getElementById(`response-${modelId}`);
-            if (responseEl) {
-                responseEl.innerHTML = '<div class="spinner" style="width: 32px; height: 32px; margin: 20px auto;"></div>';
-            }
-        });
-        
-        // Run all models in parallel with staggered starts
-        const promises = this.selectedModels.map((modelId, index) => 
-            this.runModel(modelId, query, index * 200)
+
+        const resultsContainer = document.getElementById('arena-results');
+        if (resultsContainer) {
+            // Show attractive loader
+            Loader.show(resultsContainer, {
+                type: 'comparison',
+                title: 'Running Model Comparison',
+                subtitle: `Comparing ${this.state.selectedModels.length} models on ${this.industries[this.state.currentIndustry].name} benchmark`,
+                showSteps: true,
+                stepCount: 5
+            });
+        }
+
+        // Random delay 3-5 seconds
+        const delay = Loader.getRandomDelay();
+        await Utils.sleep(delay);
+
+        // Run all models
+        const results = await Promise.all(
+            this.state.selectedModels.map(modelId => this.runModel(modelId, prompt))
         );
-        
-        await Promise.all(promises);
-        
-        // Determine winner
-        this.highlightWinner();
-        
+
+        this.renderResults(results);
         this.state.isRunning = false;
         Toast.success('Comparison complete!');
     },
-    
-    // Run single model
-    async runModel(modelId, query, delay) {
-        await Utils.sleep(delay);
+
+    async runModel(modelId, prompt) {
+        const model = this.models[modelId];
+        const config = this.industries[this.state.currentIndustry];
         
-        const model = this.models.find(m => m.id === modelId);
-        const responseEl = document.getElementById(`response-${modelId}`);
-        const latencyEl = document.getElementById(`latency-${modelId}`);
-        const tokensEl = document.getElementById(`tokens-${modelId}`);
-        const costEl = document.getElementById(`cost-${modelId}`);
-        const qualityEl = document.getElementById(`quality-${modelId}`);
+        // Minimal delay since main delay is handled by loader
+        await Utils.sleep(100);
+
+        // Generate simulated response based on industry and model
+        const response = this.generateResponse(modelId, prompt, config);
         
-        if (!model || !responseEl) return;
+        // Generate metrics - ShellKode models get better scores
+        const isShellKode = model.type === 'shellkode';
+        const baseQuality = isShellKode ? 88 : 75;
         
-        // Determine response type
-        const isCodeQuery = query.toLowerCase().includes('code') || query.toLowerCase().includes('implement');
-        const responseKey = isCodeQuery ? 'code' : 'default';
-        const response = this.sampleResponses[modelId]?.[responseKey] || this.sampleResponses[modelId]?.default || 'Response generated successfully.';
-        
-        // Simulate typing with metrics update
-        const startTime = performance.now();
-        responseEl.innerHTML = '';
-        
-        // Adjust speed based on quantization
-        const quantMultiplier = this.currentQuant === 'FP16' ? 1 : this.currentQuant === 'INT8' ? 1.3 : 1.6;
-        const typeSpeed = Math.round(15 / quantMultiplier);
-        
-        // Calculate metrics
-        const baseLatency = model.avgLatency / quantMultiplier;
-        const baseTokens = model.tokensPerSec * quantMultiplier;
-        const baseCost = model.costPer1K / quantMultiplier;
-        
-        // Simulate response streaming
-        let currentText = '';
-        for (let i = 0; i < response.length; i++) {
-            currentText += response[i];
-            responseEl.innerHTML = this.formatResponse(currentText);
-            
-            // Update metrics periodically
-            if (i % 20 === 0) {
-                const elapsed = performance.now() - startTime;
-                const jitter = 0.8 + Math.random() * 0.4;
-                
-                latencyEl.textContent = Math.round(baseLatency * jitter);
-                tokensEl.textContent = Math.round(baseTokens * jitter);
-                costEl.textContent = '$' + (baseCost * jitter).toFixed(4);
-            }
-            
-            await Utils.sleep(typeSpeed);
-        }
-        
-        // Final metrics
-        const qualityScore = this.calculateQualityScore(modelId, response);
-        latencyEl.textContent = Math.round(baseLatency + Math.random() * 20);
-        tokensEl.textContent = Math.round(baseTokens + Math.random() * 10);
-        costEl.textContent = '$' + baseCost.toFixed(4);
-        qualityEl.textContent = qualityScore.toFixed(1);
-        
-        // Store result
-        this.state.results.push({
-            modelId,
-            latency: parseFloat(latencyEl.textContent),
-            tokens: parseFloat(tokensEl.textContent),
-            cost: parseFloat(costEl.textContent.replace('$', '')),
-            quality: qualityScore
-        });
-    },
-    
-    // Format response with code highlighting
-    formatResponse(text) {
-        return text
-            .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="code-block"><code>$2</code></pre>')
-            .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
-            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-            .replace(/\n/g, '<br>');
-    },
-    
-    // Calculate quality score
-    calculateQualityScore(modelId, response) {
-        // Base scores by model
-        const baseScores = {
-            'mistral-7b': 8.5,
-            'phi-3-mini': 8.2,
-            'llama-3.2': 7.8,
-            'qwen-2.5': 8.4
+        const metrics = {
+            latency: Math.round(80 + Math.random() * 60),
+            tokensPerSec: Math.round(80 + Math.random() * 120),
+            costPer1K: this.getCostPer1K(modelId),
+            quality: Math.round(baseQuality + Math.random() * 10)
         };
-        
-        const base = baseScores[modelId] || 7.5;
-        const variation = (Math.random() - 0.5) * 0.8;
-        
-        return Math.min(10, Math.max(5, base + variation));
+
+        return { modelId, model, response, metrics };
     },
-    
-    // Highlight winner
-    highlightWinner() {
-        if (this.state.results.length === 0) return;
-        
-        // Calculate composite score (higher is better)
-        const scores = this.state.results.map(r => ({
-            modelId: r.modelId,
-            score: (r.quality * 10) + (100 / r.latency) + (r.tokens / 10) - (r.cost * 1000)
-        }));
-        
-        const winner = scores.reduce((a, b) => a.score > b.score ? a : b);
-        
-        // Highlight winner card
-        document.querySelectorAll('.arena-model-card').forEach(card => {
-            card.classList.remove('winner');
-            if (card.dataset.model === winner.modelId) {
-                card.classList.add('winner');
+
+    generateResponse(modelId, prompt, config) {
+        // Industry-specific response templates
+        const templates = {
+            healthcare: {
+                'mistral-7b': "Based on the clinical presentation, this patient presents with classic symptoms of acute coronary syndrome (ACS). Immediate ECG and troponin levels are indicated. Key differentials include STEMI, NSTEMI, and unstable angina. [Clinical assessment generated with medical terminology alignment]",
+                'phi-3.5': "Patient symptoms suggest cardiac etiology. Recommend: 1) Stat ECG 2) Troponin x2 3) Cardiology consult. Risk stratification using HEART score advised. [Compact clinical summary]",
+                'default': "Clinical assessment indicates cardiac workup is warranted. Standard ACS protocol should be initiated with appropriate monitoring."
+            },
+            financial: {
+                'mistral-7b': "Risk Analysis: The 40% APAC revenue concentration represents significant geographic risk. Key concerns: 1) Currency exposure 2) Regulatory changes 3) Economic slowdown impact. Recommend diversification strategy. [Comprehensive financial analysis]",
+                'qwen-2.5-7b': "Geographic concentration risk identified. APAC 40% exposure creates vulnerability to regional economic cycles. Mitigation strategies should include market diversification and hedging instruments. [Detailed risk assessment with quantitative focus]",
+                'default': "Significant concentration risk identified in APAC region. Further diversification analysis recommended."
+            },
+            retail: {
+                'mistral-7b': "Premium Wireless Headphones: Immerse yourself in studio-quality sound with advanced noise cancellation. 30 hours of uninterrupted playback. Comfortable over-ear design. Perfect for travel, work, and everything in between. [SEO Score: 92/100]",
+                'phi-3.5': "Experience Superior Sound | 30hr Battery | Active Noise Cancellation | Wireless Freedom. Premium audio meets all-day comfort. Shop now! [Optimized for conversion]",
+                'default': "High-quality wireless headphones with excellent battery life and noise cancellation features."
+            },
+            customer_service: {
+                'mistral-7b': "I sincerely apologize for the double charge on your account. I can see both transactions and will process an immediate refund for the duplicate charge. The refund will appear within 3-5 business days. Is there anything else I can help you with today? [Empathy + Resolution]",
+                'phi-3.5': "Sorry for the billing error! I've initiated a refund for the duplicate charge - you'll see it in 3-5 days. Reference #RF-12345 for your records. Anything else? [Efficient + Friendly]",
+                'default': "I apologize for the inconvenience. A refund has been initiated for the duplicate charge."
             }
-        });
+        };
+
+        const industryTemplates = templates[this.state.currentIndustry] || templates.general || {};
+        return industryTemplates[modelId] || industryTemplates['default'] || 
+               `Response generated by ${this.models[modelId].name} for the given prompt. This model demonstrates strong performance on ${config.name} tasks.`;
+    },
+
+    getCostPer1K(modelId) {
+        const costs = {
+            'mistral-7b': 0.0004,
+            'phi-3.5': 0.0003,
+            'llama-3.2-3b': 0.0003,
+            'qwen-2.5-7b': 0.0004,
+            'gemma-2-9b': 0.0005
+        };
+        return costs[modelId] || 0.0004;
+    },
+
+    renderResults(results) {
+        const container = document.getElementById('arena-results');
+        if (!container) return;
+
+        const config = this.industries[this.state.currentIndustry];
         
-        // Clear results for next run
-        this.state.results = [];
+        // Find winner (highest quality score)
+        const winner = results.reduce((a, b) => a.metrics.quality > b.metrics.quality ? a : b);
+
+        let html = `<div class="results-header">
+            <h4>Comparison Results</h4>
+            <span class="industry-badge">${config.icon} ${config.name}</span>
+        </div>`;
+
+        html += '<div class="results-grid">';
+        
+        results.forEach(result => {
+            const isWinner = result.modelId === winner.modelId;
+            html += `<div class="result-card ${isWinner ? 'winner' : ''}">
+                ${isWinner ? '<span class="winner-badge">🏆 Best</span>' : ''}
+                <div class="result-header">
+                    <span class="model-name">${result.model.name}</span>
+                    <span class="model-params">${result.model.params}</span>
+                </div>
+                <div class="result-response">${result.response}</div>
+                <div class="result-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Latency</span>
+                        <span class="metric-value">${result.metrics.latency}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Tokens/sec</span>
+                        <span class="metric-value">${result.metrics.tokensPerSec}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Cost/1K</span>
+                        <span class="metric-value">$${result.metrics.costPer1K}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Quality</span>
+                        <span class="metric-value quality-score">${result.metrics.quality}%</span>
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        html += '</div>';
+
+        // Evaluation criteria
+        html += `<div class="evaluation-criteria">
+            <h5>Evaluation Criteria (${config.name})</h5>
+            <div class="criteria-list">
+                ${config.evaluationCriteria.map(c => `<span class="criterion">${c}</span>`).join('')}
+            </div>
+        </div>`;
+
+        container.innerHTML = html;
+        this.state.results = results;
+    },
+
+    clearResults() {
+        const container = document.getElementById('arena-results');
+        if (container) {
+            container.innerHTML = '<div class="no-results">Select models and run comparison</div>';
+        }
     }
 };
 
-// Additional styles
-const arenaStyles = document.createElement('style');
-arenaStyles.textContent = `
-    .model-checkbox {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: var(--color-background);
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        border: 2px solid transparent;
-    }
-    .model-checkbox:hover {
-        background: white;
-    }
-    .model-checkbox.selected {
-        border-color: var(--color-primary);
-        background: rgba(20, 110, 180, 0.05);
-    }
-    .model-checkbox input {
-        display: none;
-    }
-    .model-checkbox-name {
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-    .model-checkbox-params {
-        font-size: 0.75rem;
-        color: var(--color-text-light);
-    }
-    .code-block {
-        background: #1a1a2e;
-        color: #4daae8;
-        padding: 12px;
-        border-radius: 8px;
-        overflow-x: auto;
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
-        margin: 8px 0;
-    }
-    .inline-code {
-        background: rgba(77, 170, 232, 0.1);
-        color: var(--color-primary);
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-family: var(--font-mono);
-        font-size: 0.85em;
-    }
-`;
-document.head.appendChild(arenaStyles);
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    ModelArena.init();
-});
-
+document.addEventListener('DOMContentLoaded', () => ModelArena.init());
 window.ModelArena = ModelArena;

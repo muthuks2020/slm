@@ -18,10 +18,8 @@
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">
-                    <h2>SLM Command Center</h2>
-                </div>
+            <div class="sidebar-brand">
+                <img src="assets/shellkode.png" alt="ShellKode" class="logo-img">
             </div>
             
             <nav class="sidebar-nav">
@@ -34,7 +32,20 @@
                 </div>
                 
                 <div class="nav-section">
-                    <div class="nav-section-title">Capabilities</div>
+                    <div class="nav-section-title">SLM Development</div>
+                    <a class="nav-item" data-module="model-lab">
+                        <span class="nav-item-icon">🧪</span>
+                        <span>Model Development Lab</span>
+                        <span class="nav-item-badge">Core</span>
+                    </a>
+                    <a class="nav-item" data-module="model-arena">
+                        <span class="nav-item-icon">⚔️</span>
+                        <span>Model Arena</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Enterprise Solutions</div>
                     <a class="nav-item" data-module="cost-ticker">
                         <span class="nav-item-icon">💰</span>
                         <span>Live Cost Ticker</span>
@@ -48,18 +59,13 @@
                         <span class="nav-item-icon">🛡️</span>
                         <span>Guardrails Control</span>
                     </a>
-                    <a class="nav-item" data-module="model-arena">
-                        <span class="nav-item-icon">⚔️</span>
-                        <span>Model Arena</span>
-                    </a>
-                    <a class="nav-item" data-module="fine-tuning">
-                        <span class="nav-item-icon">🎯</span>
-                        <span>Fine-Tuning Preview</span>
-                    </a>
                     <a class="nav-item" data-module="infra-recommender">
                         <span class="nav-item-icon">🔧</span>
                         <span>Infra Recommender</span>
-                        <span class="nav-item-badge">New</span>
+                    </a>
+                    <a class="nav-item" data-module="data-sovereignty">
+                        <span class="nav-item-icon">🔒</span>
+                        <span>Data Sovereignty</span>
                     </a>
                 </div>
                 
@@ -82,67 +88,192 @@
             <!-- Top Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <h1 class="page-title">Dashboard</h1>
+                    <h1 class="page-title">SLM Command Center</h1>
                     <div class="breadcrumb">
-                        <span>Home</span>
+                        <span>ShellKode</span>
                         <span class="breadcrumb-separator">/</span>
-                        <span>Overview</span>
+                        <span>Enterprise SLM Development</span>
                     </div>
                 </div>
                 <div class="header-right">
                     <span id="current-datetime" class="text-muted text-sm"></span>
-                    <img src="assets/shellkode.png" alt="ShellKode" class="header-logo">
                 </div>
             </header>
             
             <!-- Content Area -->
             <div class="content-area">
-                <!-- Stats Overview -->
-                <div class="dashboard-stats" data-animate>
-                    <div class="stat-card">
-                        <div class="stat-icon blue">💰</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Cost Savings</div>
-                            <div class="stat-value">3-23x</div>
-                            <div class="stat-change positive">↑ vs GPT-4/Claude</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green">⚡</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Avg Latency</div>
-                            <div class="stat-value">&lt;100ms</div>
-                            <div class="stat-change positive">Production Ready</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon orange">🔒</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Data Sovereignty</div>
-                            <div class="stat-value">100%</div>
-                            <div class="stat-change positive">Your VPC</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple">📈</div>
-                        <div class="stat-content">
-                            <div class="stat-label">Customization</div>
-                            <div class="stat-value">+24%</div>
-                            <div class="stat-change positive">With Fine-tuning</div>
+                <!-- Hero Section -->
+                <div class="hero-banner" data-animate>
+                    <div class="hero-content">
+                        <div class="hero-badge">🚀 Enterprise SLM Builder</div>
+                        <h1 class="hero-title">We Build Production-Ready<br>Small Language Models</h1>
+                        <p class="hero-subtitle">Custom SLM development, fine-tuning, and deployment for enterprise. From concept to production in weeks, not months.</p>
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <span class="hero-stat-value">12+</span>
+                                <span class="hero-stat-label">Models Built</span>
+                            </div>
+                            <div class="hero-stat">
+                                <span class="hero-stat-value">4</span>
+                                <span class="hero-stat-label">Industries</span>
+                            </div>
+                            <div class="hero-stat">
+                                <span class="hero-stat-value">+32%</span>
+                                <span class="hero-stat-label">Avg Improvement</span>
+                            </div>
+                            <div class="hero-stat">
+                                <span class="hero-stat-value">100%</span>
+                                <span class="hero-stat-label">Data Sovereignty</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Module Cards -->
-                <h2 class="mb-4" data-animate>Explore Capabilities</h2>
+
+                <!-- ShellKode Model Portfolio -->
+                <h2 class="section-heading" data-animate>
+                    <span class="heading-icon">🏆</span>
+                    ShellKode Model Portfolio
+                </h2>
+                <div class="model-portfolio" data-animate>
+                    <div class="portfolio-card healthcare">
+                        <div class="portfolio-badge">Healthcare</div>
+                        <h3 class="portfolio-model">SK-Clinical-7B</h3>
+                        <p class="portfolio-desc">Medical terminology, clinical summaries, ICD-10 coding</p>
+                        <div class="portfolio-stats">
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Base Model</span>
+                                <span class="stat-value">Mistral 7B</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Improvement</span>
+                                <span class="stat-value highlight">+35%</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Training Data</span>
+                                <span class="stat-value">2.4M tokens</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tags">
+                            <span class="tag">HIPAA Ready</span>
+                            <span class="tag">PHI Detection</span>
+                            <span class="tag">EHR Integration</span>
+                        </div>
+                    </div>
+                    
+                    <div class="portfolio-card finance">
+                        <div class="portfolio-badge">Financial Services</div>
+                        <h3 class="portfolio-model">SK-Finance-7B</h3>
+                        <p class="portfolio-desc">SEC filings, risk analysis, compliance documentation</p>
+                        <div class="portfolio-stats">
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Base Model</span>
+                                <span class="stat-value">Qwen 2.5 7B</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Improvement</span>
+                                <span class="stat-value highlight">+28%</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Training Data</span>
+                                <span class="stat-value">1.8M tokens</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tags">
+                            <span class="tag">SOC2 Compliant</span>
+                            <span class="tag">PCI-DSS</span>
+                            <span class="tag">AML/KYC</span>
+                        </div>
+                    </div>
+                    
+                    <div class="portfolio-card legal">
+                        <div class="portfolio-badge">Legal</div>
+                        <h3 class="portfolio-model">SK-Legal-3B</h3>
+                        <p class="portfolio-desc">Contract analysis, clause extraction, legal research</p>
+                        <div class="portfolio-stats">
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Base Model</span>
+                                <span class="stat-value">Phi-3.5 Mini</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Improvement</span>
+                                <span class="stat-value highlight">+41%</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Training Data</span>
+                                <span class="stat-value">1.2M tokens</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tags">
+                            <span class="tag">Contract Review</span>
+                            <span class="tag">Due Diligence</span>
+                            <span class="tag">Compliance</span>
+                        </div>
+                    </div>
+                    
+                    <div class="portfolio-card retail">
+                        <div class="portfolio-badge">Retail & E-commerce</div>
+                        <h3 class="portfolio-model">SK-Commerce-3B</h3>
+                        <p class="portfolio-desc">Product descriptions, SEO optimization, customer support</p>
+                        <div class="portfolio-stats">
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Base Model</span>
+                                <span class="stat-value">Llama 3.2 3B</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Improvement</span>
+                                <span class="stat-value highlight">+38%</span>
+                            </div>
+                            <div class="portfolio-stat">
+                                <span class="stat-label">Training Data</span>
+                                <span class="stat-value">3.1M tokens</span>
+                            </div>
+                        </div>
+                        <div class="portfolio-tags">
+                            <span class="tag">SEO Optimized</span>
+                            <span class="tag">Multi-lingual</span>
+                            <span class="tag">Brand Voice</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Development Capabilities -->
+                <h2 class="section-heading" data-animate>
+                    <span class="heading-icon">⚙️</span>
+                    SLM Development Capabilities
+                </h2>
                 <div class="module-grid" data-animate>
+                    <div class="module-card featured" data-module="model-lab">
+                        <span class="module-badge badge badge-primary">Core Capability</span>
+                        <div class="module-icon">🧪</div>
+                        <h3 class="module-title">Model Development Lab</h3>
+                        <p class="module-description">
+                            End-to-end SLM development: custom training, LoRA/QLoRA fine-tuning, 
+                            knowledge distillation, and RLHF alignment. Build models tailored to your domain.
+                        </p>
+                        <div class="module-tech-tags">
+                            <span>LoRA</span>
+                            <span>QLoRA</span>
+                            <span>Distillation</span>
+                            <span>RLHF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card" data-module="model-arena">
+                        <div class="module-icon">⚔️</div>
+                        <h3 class="module-title">Model Comparison Arena</h3>
+                        <p class="module-description">
+                            Benchmark ShellKode models against open-source alternatives. Compare 
+                            SK-Clinical-7B vs Mistral vs Llama on your specific use cases.
+                        </p>
+                    </div>
+                    
                     <div class="module-card" data-module="cost-ticker">
                         <span class="module-badge badge badge-success">Live Demo</span>
                         <div class="module-icon">💰</div>
                         <h3 class="module-title">Live Cost Ticker</h3>
                         <p class="module-description">
-                            Real-time split-screen comparison showing GPT-4 API costs vs self-hosted SLM. 
-                            Watch the savings accumulate with every query.
+                            Real-time cost comparison: GPT-4 API vs ShellKode self-hosted models. 
+                            See 10-50x cost savings with production-ready performance.
                         </p>
                     </div>
                     
@@ -150,8 +281,8 @@
                         <div class="module-icon">📄</div>
                         <h3 class="module-title">RAG with Citations</h3>
                         <p class="module-description">
-                            Document Q&A with clickable source citations. Every answer links back to 
-                            exact document, page, and paragraph for complete auditability.
+                            Enterprise document Q&A with full source attribution. Every answer 
+                            traces back to exact documents for complete auditability.
                         </p>
                     </div>
                     
@@ -159,65 +290,104 @@
                         <div class="module-icon">🛡️</div>
                         <h3 class="module-title">Guardrails Control Panel</h3>
                         <p class="module-description">
-                            Toggle content filters in real-time. Competitor blocking, compliance disclaimers, 
-                            PII detection—see guardrails in action.
-                        </p>
-                    </div>
-                    
-                    <div class="module-card" data-module="model-arena">
-                        <div class="module-icon">⚔️</div>
-                        <h3 class="module-title">Model Comparison Arena</h3>
-                        <p class="module-description">
-                            Side-by-side comparison of Mistral 7B, Phi-3, and Llama 3.2. Compare latency, 
-                            quality, and cost across quantization levels.
-                        </p>
-                    </div>
-                    
-                    <div class="module-card" data-module="fine-tuning">
-                        <div class="module-icon">🎯</div>
-                        <h3 class="module-title">Fine-Tuning Impact Preview</h3>
-                        <p class="module-description">
-                            Before/after comparison showing base model vs domain-adapted model. 
-                            See accuracy jump from 67% to 91% on your terminology.
+                            Industry-specific content controls, compliance filters, and safety 
+                            guardrails built into every ShellKode model deployment.
                         </p>
                     </div>
                     
                     <div class="module-card" data-module="infra-recommender">
-                        <span class="module-badge badge badge-primary">New</span>
                         <div class="module-icon">🔧</div>
                         <h3 class="module-title">Infrastructure Recommender</h3>
                         <p class="module-description">
-                            Input your requirements, get instant Model + GPU + Platform recommendations 
-                            with projected costs. End-to-end automation.
+                            Optimal GPU + platform recommendations for your ShellKode model. 
+                            AWS, GCP, on-premise—we design the right architecture.
+                        </p>
+                    </div>
+                    
+                    <div class="module-card" data-module="data-sovereignty">
+                        <div class="module-icon">🔒</div>
+                        <h3 class="module-title">Data Sovereignty</h3>
+                        <p class="module-description">
+                            Your data never leaves your infrastructure. HIPAA, SOC2, GDPR, 
+                            FedRAMP compliant deployments from day one.
                         </p>
                     </div>
                 </div>
                 
-                <!-- Value Proposition -->
+                <!-- Training Pipeline -->
+                <h2 class="section-heading" data-animate>
+                    <span class="heading-icon">🔄</span>
+                    Our Development Process
+                </h2>
+                <div class="pipeline-container" data-animate>
+                    <div class="pipeline-step">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">📊</div>
+                        <h4>Data Curation</h4>
+                        <p>Domain-specific dataset collection and quality filtering</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">🔧</div>
+                        <h4>Pre-processing</h4>
+                        <p>Tokenization, formatting, and instruction tuning prep</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">🧠</div>
+                        <h4>Training</h4>
+                        <p>LoRA/QLoRA fine-tuning on enterprise GPU clusters</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">📈</div>
+                        <h4>Evaluation</h4>
+                        <p>Domain benchmarks, accuracy testing, bias detection</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">5</div>
+                        <div class="step-icon">⚡</div>
+                        <h4>Optimization</h4>
+                        <p>Quantization, inference tuning, latency optimization</p>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-step">
+                        <div class="step-number">6</div>
+                        <div class="step-icon">🚀</div>
+                        <h4>Deployment</h4>
+                        <p>Production deployment to your VPC with monitoring</p>
+                    </div>
+                </div>
+
+                <!-- Why ShellKode -->
                 <div class="card mt-4" data-animate>
                     <div class="card-header">
-                        <h3 class="card-title">🎯 Why ShellKode SLM Services?</h3>
+                        <h3 class="card-title">🎯 Why Build with ShellKode?</h3>
                     </div>
                     <div class="card-body">
                         <div class="grid grid-cols-3 gap-4">
                             <div class="text-center p-4">
-                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">69%</div>
-                                <div class="text-muted text-sm">of enterprises cite AI data leaks as top security concern</div>
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">12+</div>
+                                <div class="text-muted text-sm">Production models built across Healthcare, Finance, Legal, and Retail</div>
                             </div>
                             <div class="text-center p-4">
-                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">85%</div>
-                                <div class="text-muted text-sm">of ML projects fail to reach production deployment</div>
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">+32%</div>
+                                <div class="text-muted text-sm">Average performance improvement over base models on domain tasks</div>
                             </div>
                             <div class="text-center p-4">
-                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">$64B</div>
-                                <div class="text-muted text-sm">projected SLM market size by 2034 (25.7% CAGR)</div>
+                                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">4-6 wks</div>
+                                <div class="text-muted text-sm">Typical time from kickoff to production-ready custom SLM</div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <p class="text-muted mb-3">We help enterprises deploy production-ready SLM solutions with complete data sovereignty.</p>
-                        <button class="btn btn-primary" onclick="Toast.info('Contact sales@shellkode.com for a personalized demo')">
-                            Schedule a Demo
+                        <p class="text-muted mb-3">We don't just deploy models—we build them. Custom SLMs engineered for your specific domain and requirements.</p>
+                        <button class="btn btn-primary" onclick="Toast.info('Contact sales@shellkode.com to discuss your SLM project')">
+                            Start Your SLM Project
                         </button>
                     </div>
                 </div>
@@ -227,5 +397,245 @@
     
     <!-- Scripts -->
     <script src="js/main.js"></script>
+    
+    <style>
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #146eb4 0%, #0d4a7a 50%, #1a365d 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 40%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="80" cy="20" r="40" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="80" r="30" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: cover;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+            line-height: 1.2;
+        }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+        }
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .hero-stat-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Section Heading */
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.5rem 0;
+            color: #1a202c;
+        }
+        .heading-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Model Portfolio */
+        .model-portfolio {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .portfolio-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+        }
+        .portfolio-card.healthcare::before { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .portfolio-card.finance::before { background: linear-gradient(90deg, #3498db, #2980b9); }
+        .portfolio-card.legal::before { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+        .portfolio-card.retail::before { background: linear-gradient(90deg, #27ae60, #229954); }
+        .portfolio-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .portfolio-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .portfolio-model {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0 0 0.5rem 0;
+        }
+        .portfolio-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .portfolio-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .portfolio-stat {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+        .portfolio-stat .stat-label { color: #666; }
+        .portfolio-stat .stat-value { font-weight: 600; color: #333; }
+        .portfolio-stat .stat-value.highlight { color: #28a745; }
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .portfolio-tags .tag {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            background: #e3f2fd;
+            color: #146eb4;
+            border-radius: 4px;
+        }
+
+        /* Module Card Featured */
+        .module-card.featured {
+            border: 2px solid #146eb4;
+            background: linear-gradient(135deg, #f0f7ff 0%, #fff 100%);
+        }
+        .module-tech-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .module-tech-tags span {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: #146eb4;
+            color: white;
+            border-radius: 20px;
+        }
+
+        /* Pipeline Container */
+        .pipeline-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        .pipeline-step {
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+            position: relative;
+        }
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: #146eb4;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .pipeline-step h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0 0 0.5rem 0;
+        }
+        .pipeline-step p {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .pipeline-arrow {
+            font-size: 1.5rem;
+            color: #ccc;
+            padding: 0 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .model-portfolio { grid-template-columns: repeat(2, 1fr); }
+            .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            .model-portfolio { grid-template-columns: 1fr; }
+            .pipeline-container { flex-direction: column; }
+            .pipeline-arrow { transform: rotate(90deg); }
+        }
+    </style>
 </body>
 </html>

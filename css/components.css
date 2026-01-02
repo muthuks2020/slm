@@ -1163,3 +1163,414 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ==========================================
+   ADDITIONAL NAV BADGE STYLES
+   ========================================== */
+
+.nav-badge {
+    margin-left: auto;
+    background: var(--color-secondary, #4daae8);
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+.nav-badge.new {
+    background: #28a745;
+}
+
+/* ==========================================
+   MODERN BUTTON ENHANCEMENTS
+   ========================================== */
+
+/* Action Button Groups */
+.btn-group {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.btn-group-vertical {
+    flex-direction: column;
+}
+
+/* Icon Buttons */
+.btn-icon-only {
+    padding: 0.75rem;
+    border-radius: 10px;
+}
+
+.btn-icon-only svg,
+.btn-icon-only i {
+    width: 20px;
+    height: 20px;
+}
+
+/* Pill Buttons */
+.btn-pill {
+    border-radius: 50px;
+}
+
+/* Full Width Button */
+.btn-block {
+    width: 100%;
+}
+
+/* Floating Action Button */
+.btn-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.btn-fab:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* Loading State */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+    margin-left: 0.5rem;
+}
+
+@keyframes btn-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   ATTRACTIVE LOADER SYSTEM
+   ========================================== */
+
+/* Loader Overlay Container */
+.sk-loader-overlay {
+    position: relative;
+    min-height: 200px;
+}
+
+.sk-loader-overlay.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    border-radius: inherit;
+}
+
+/* Main Loader Container */
+.sk-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+/* Animated Logo Loader */
+.sk-loader-logo {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+
+.sk-loader-logo::before {
+    content: '🧠';
+    font-size: 2.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: sk-pulse 1.5s ease-in-out infinite;
+}
+
+.sk-loader-ring {
+    width: 80px;
+    height: 80px;
+    border: 4px solid #e0e0e0;
+    border-top-color: #146eb4;
+    border-right-color: #4daae8;
+    border-radius: 50%;
+    animation: sk-spin 1s linear infinite;
+}
+
+/* Dots Loader */
+.sk-loader-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.sk-loader-dots span {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #146eb4, #4daae8);
+    border-radius: 50%;
+    animation: sk-bounce 1.4s ease-in-out infinite;
+}
+
+.sk-loader-dots span:nth-child(1) { animation-delay: 0s; }
+.sk-loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.sk-loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Progress Bar Loader */
+.sk-loader-progress {
+    width: 200px;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.sk-loader-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #146eb4, #4daae8, transparent);
+    animation: sk-progress 1.5s ease-in-out infinite;
+}
+
+/* AI Brain Loader */
+.sk-loader-brain {
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+
+.sk-loader-brain-icon {
+    font-size: 3rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: sk-pulse 2s ease-in-out infinite;
+}
+
+.sk-loader-brain-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid transparent;
+}
+
+.sk-loader-brain-ring:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    border-top-color: #146eb4;
+    animation: sk-spin 1.5s linear infinite;
+}
+
+.sk-loader-brain-ring:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    border-right-color: #4daae8;
+    animation: sk-spin-reverse 1.2s linear infinite;
+}
+
+.sk-loader-brain-ring:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+    border-bottom-color: #28a745;
+    animation: sk-spin 0.9s linear infinite;
+}
+
+/* Status Text */
+.sk-loader-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.sk-loader-subtext {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    max-width: 250px;
+}
+
+/* Processing Steps */
+.sk-loader-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.sk-loader-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #999;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.sk-loader-step.active {
+    color: #146eb4;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sk-loader-step.complete {
+    color: #28a745;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sk-loader-step-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.sk-loader-step.active .sk-loader-step-icon {
+    background: #146eb4;
+    color: white;
+    animation: sk-pulse 1s ease-in-out infinite;
+}
+
+.sk-loader-step.complete .sk-loader-step-icon {
+    background: #28a745;
+    color: white;
+}
+
+/* Inline Loader (for buttons/small areas) */
+.sk-inline-loader {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sk-inline-loader .sk-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #e0e0e0;
+    border-top-color: #146eb4;
+    border-radius: 50%;
+    animation: sk-spin 0.8s linear infinite;
+}
+
+/* Card Loader Placeholder */
+.sk-card-loader {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: sk-shimmer 1.5s infinite;
+    border-radius: 8px;
+    min-height: 150px;
+}
+
+/* Keyframes */
+@keyframes sk-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes sk-spin-reverse {
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes sk-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+@keyframes sk-bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes sk-progress {
+    0% { left: -50%; }
+    100% { left: 100%; }
+}
+
+@keyframes sk-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes sk-fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fullscreen Loader Overlay */
+.sk-fullscreen-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+/* Section Loader */
+.sk-section-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    border-radius: 16px;
+    border: 2px solid #e0e0e0;
+    min-height: 250px;
+}
+
+/* ==========================================
+   DATA SOVEREIGNTY PAGE STYLES
+   ========================================== */
+
+.nav-badge.new::after {
+    content: "";
+}
+
+

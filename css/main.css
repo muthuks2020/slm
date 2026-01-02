@@ -117,9 +117,12 @@ a:hover {
 }
 
 .sidebar-brand {
+    padding: 1.5rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-brand h2 {
@@ -206,12 +209,13 @@ a:hover {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: #f5f7fa;
 }
 
-/* Top Header Bar */
-.top-header {
+/* Content Header */
+.content-header {
     background: var(--color-white);
-    padding: 1rem 2rem;
+    padding: 1.75rem 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -219,7 +223,79 @@ a:hover {
     position: sticky;
     top: 0;
     z-index: 50;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.content-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin: 0 0 0.25rem 0;
+}
+
+.content-header .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+}
+
+.content-header .breadcrumb .separator {
+    color: #ccc;
+}
+
+.content-header .breadcrumb .current {
+    color: var(--color-primary);
+}
+
+.content-header .datetime {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+}
+
+/* Page Content Area */
+.page-content {
+    flex: 1;
+    padding: 2rem 3rem;
+    overflow-y: auto;
+}
+
+/* Module Sections */
+.module-section {
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e8eaed;
+}
+
+.module-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin: 0 0 0.5rem 0;
+}
+
+.module-section .section-description {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin: 0 0 1rem 0;
+}
+
+/* Top Header Bar */
+.top-header {
+    background: var(--color-white);
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .header-left {
@@ -332,42 +408,76 @@ a:hover {
     }
 }
 
-/* Buttons */
+/* Modern Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
+    border-radius: 10px;
     font-family: var(--font-body);
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: all 0.2s ease;
     border: none;
     outline: none;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 .btn-primary {
-    background: var(--color-primary);
+    background: linear-gradient(135deg, #146eb4 0%, #0d5a96 100%);
     color: var(--color-white);
+    box-shadow: 0 4px 14px rgba(20, 110, 180, 0.25);
 }
 
 .btn-primary:hover {
-    background: #0d5a9a;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #1a7ec9 0%, #0f6aa8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(20, 110, 180, 0.35);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(20, 110, 180, 0.25);
 }
 
 .btn-secondary {
-    background: var(--color-secondary);
+    background: linear-gradient(135deg, #4daae8 0%, #3a9ad8 100%);
     color: var(--color-white);
+    box-shadow: 0 4px 14px rgba(77, 170, 232, 0.25);
 }
 
 .btn-secondary:hover {
-    background: #3a9ad8;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #5cb8f0 0%, #4daae8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(77, 170, 232, 0.35);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20963d 100%);
+    color: var(--color-white);
+    box-shadow: 0 4px 14px rgba(40, 167, 69, 0.25);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #2fc54f 0%, #28a745 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.35);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: var(--color-white);
+    box-shadow: 0 4px 14px rgba(220, 53, 69, 0.25);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #e4495a 0%, #dc3545 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.35);
 }
 
 .btn-outline {
@@ -377,18 +487,69 @@ a:hover {
 }
 
 .btn-outline:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: rgba(20, 110, 180, 0.08);
+    border-color: #0d5a96;
+    color: #0d5a96;
+    transform: translateY(-2px);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border: none;
+}
+
+.btn-ghost:hover {
+    background: rgba(20, 110, 180, 0.08);
+    transform: translateY(-1px);
+}
+
+.btn-light {
+    background: #f8f9fa;
+    color: #333;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-light:hover {
+    background: #e9ecef;
+    border-color: #ccc;
+    transform: translateY(-1px);
 }
 
 .btn-sm {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
+    border-radius: 8px;
 }
 
 .btn-lg {
     padding: 1rem 2rem;
     font-size: 1rem;
+    border-radius: 12px;
+}
+
+.btn-icon {
+    padding: 0.625rem;
+    border-radius: 10px;
+}
+
+.btn-icon svg, .btn-icon i {
+    width: 20px;
+    height: 20px;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Button with icon alignment */
+.btn svg, .btn i {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 /* Form Elements */
@@ -662,3 +823,43 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary);
 }
+
+/* ==========================================
+   LOGO STYLING
+   ========================================== */
+
+.logo-img {
+    width: 126px;
+    height: auto;
+    display: block;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    order: 3;
+    z-index: 10;
+    position: relative;
+}
+
+
+/* ==========================================
+   SIDEBAR BRAND STYLING
+   ========================================== */
+
+.sidebar-brand {
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-brand .logo-img {
+    width: 140px;
+    background: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+

@@ -5,142 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infrastructure Recommender | SLM Command Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/components.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body>
     <div class="app-container">
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand"><h2>SLM Command Center</h2></div>
+            <div class="sidebar-brand">
+                <img src="../assets/shellkode.png" alt="ShellKode" class="logo-img">
             </div>
             <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">Overview</div>
-                    <a class="nav-item" data-module="dashboard"><span class="nav-item-icon">📊</span><span>Dashboard</span></a>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">Capabilities</div>
-                    <a class="nav-item" data-module="cost-ticker"><span class="nav-item-icon">💰</span><span>Live Cost Ticker</span></a>
-                    <a class="nav-item" data-module="rag-citations"><span class="nav-item-icon">📄</span><span>RAG with Citations</span></a>
-                    <a class="nav-item" data-module="guardrails"><span class="nav-item-icon">🛡️</span><span>Guardrails Control</span></a>
-                    <a class="nav-item" data-module="model-arena"><span class="nav-item-icon">⚔️</span><span>Model Arena</span></a>
-                    <a class="nav-item" data-module="fine-tuning"><span class="nav-item-icon">🎯</span><span>Fine-Tuning Preview</span></a>
-                    <a class="nav-item active" data-module="infra-recommender"><span class="nav-item-icon">🔧</span><span>Infra Recommender</span><span class="nav-item-badge">New</span></a>
-                </div>
+                <a href="#" class="nav-item" data-module="dashboard"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></a>
+                <a href="#" class="nav-item" data-module="cost-ticker"><span class="nav-icon">💰</span><span class="nav-label">Cost Ticker</span><span class="nav-badge">Live</span></a>
+                <a href="#" class="nav-item" data-module="rag-citations"><span class="nav-icon">📚</span><span class="nav-label">RAG Citations</span></a>
+                <a href="#" class="nav-item" data-module="guardrails"><span class="nav-icon">🛡️</span><span class="nav-label">Guardrails</span></a>
+                <a href="#" class="nav-item" data-module="model-arena"><span class="nav-icon">⚔️</span><span class="nav-label">Model Arena</span></a>
+                <a href="#" class="nav-item" data-module="model-lab"><span class="nav-icon">🧪</span><span class="nav-label">Model Development Lab</span><span class="nav-badge">Core</span></a>
+                <a href="#" class="nav-item active" data-module="infra-recommender"><span class="nav-icon">🏗️</span><span class="nav-label">Infrastructure</span></a>
+                <a href="#" class="nav-item" data-module="data-sovereignty"><span class="nav-icon">🔒</span><span class="nav-label">Data Sovereignty</span><span class="nav-badge new">New</span></a>
             </nav>
         </aside>
-        
+
         <main class="main-content">
-            <header class="top-header">
+            <header class="content-header">
                 <div class="header-left">
-                    <h1 class="page-title">Infrastructure Recommender</h1>
-                    <div class="breadcrumb">
-                        <span>Capabilities</span>
-                        <span class="breadcrumb-separator">/</span>
-                        <span>Smart Configuration</span>
-                    </div>
+                    <h1>Infrastructure Recommender</h1>
+                    <nav class="breadcrumb"><span>SLM Command Center</span><span class="separator">/</span><span class="current">AI-Powered Recommendations</span></nav>
                 </div>
-                <div class="header-right">
-                    <img src="../assets/shellkode.png" alt="ShellKode" class="header-logo">
-                </div>
+                <div class="header-right"><span class="datetime" id="current-datetime"></span></div>
             </header>
-            
-            <div class="content-area">
-                <div class="infra-container">
-                    <!-- Input Form -->
-                    <div class="infra-form">
-                        <div class="card-header" style="padding: 0 0 1rem 0; border: none;">
-                            <h4 class="card-title">📝 Your Requirements</h4>
+
+            <div class="page-content">
+                <!-- Hero Section -->
+                <section class="hero-section">
+                    <div class="hero-icon">
+                        <i data-lucide="cpu" class="hero-lucide"></i>
+                    </div>
+                    <div class="hero-content">
+                        <h2>Get Your Optimal SLM Infrastructure Stack</h2>
+                        <p>Answer a few questions and receive a personalized Model + GPU + Platform recommendation with cost projections</p>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="stat-number">6</span>
+                            <span class="stat-text">Models Evaluated</span>
                         </div>
-                        
-                        <!-- Progress Bar -->
-                        <div class="mb-4">
-                            <div class="flex justify-between text-xs text-muted mb-1">
-                                <span>Completion</span>
-                                <span>Fill all fields</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar" id="form-progress" style="width: 0%"></div>
-                            </div>
+                        <div class="hero-stat">
+                            <span class="stat-number">4</span>
+                            <span class="stat-text">Platforms Compared</span>
                         </div>
-                        
-                        <!-- Industry -->
-                        <div class="form-section">
-                            <div class="form-section-title">Industry</div>
-                            <div class="option-grid" id="industry-options">
-                                <!-- Options will be rendered by JS -->
-                            </div>
-                        </div>
-                        
-                        <!-- Use Case -->
-                        <div class="form-section">
-                            <div class="form-section-title">Primary Use Case</div>
-                            <div class="option-grid" id="useCase-options">
-                                <!-- Options will be rendered by JS -->
-                            </div>
-                        </div>
-                        
-                        <!-- Volume -->
-                        <div class="form-section">
-                            <div class="form-section-title">Expected Query Volume</div>
-                            <div class="option-grid" id="volume-options">
-                                <!-- Options will be rendered by JS -->
-                            </div>
-                        </div>
-                        
-                        <!-- Latency -->
-                        <div class="form-section">
-                            <div class="form-section-title">Latency Requirements</div>
-                            <div class="option-grid" id="latency-options">
-                                <!-- Options will be rendered by JS -->
-                            </div>
-                        </div>
-                        
-                        <!-- Compliance -->
-                        <div class="form-section">
-                            <div class="form-section-title">Compliance Requirements</div>
-                            <div class="option-grid" id="compliance-options">
-                                <!-- Options will be rendered by JS -->
-                            </div>
-                        </div>
-                        
-                        <!-- Budget -->
-                        <div class="form-section">
-                            <div class="form-section-title">Monthly Budget</div>
-                            <div class="option-grid" id="budget-options">
-                                <!-- Options will be rendered by JS -->
-                            </div>
-                        </div>
-                        
-                        <!-- Actions -->
-                        <div class="flex gap-3 mt-4">
-                            <button id="generate-recommendation" class="btn btn-primary w-full" disabled style="opacity: 0.5;">
-                                🎯 Generate Recommendation
-                            </button>
-                            <button id="reset-form" class="btn btn-outline">
-                                🔄 Reset
-                            </button>
+                        <div class="hero-stat">
+                            <span class="stat-number">&lt;30s</span>
+                            <span class="stat-text">To Recommendation</span>
                         </div>
                     </div>
-                    
-                    <!-- Recommendation Result -->
-                    <div id="recommendation-result">
-                        <div style="text-align: center; padding: 3rem; color: var(--color-text-light);">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
-                            <h3 style="color: var(--color-dark); margin-bottom: 0.5rem;">Intelligent Infrastructure Recommender</h3>
-                            <p>Complete the form to get your personalized Model + GPU + Platform recommendation</p>
-                            <div class="mt-4 p-4" style="background: rgba(77,170,232,0.1); border-radius: 8px; text-align: left;">
-                                <h5 class="text-primary mb-2">What you'll get:</h5>
-                                <ul style="font-size: 0.9rem; margin: 0; padding-left: 1.5rem;">
-                                    <li>Optimal model selection for your use case</li>
-                                    <li>GPU instance recommendation with costs</li>
-                                    <li>Deployment platform guidance</li>
-                                    <li>Estimated monthly costs & savings vs GPT-4</li>
-                                    <li>Exportable configuration file</li>
-                                </ul>
+                </section>
+
+                <!-- Configuration Form -->
+                <div class="config-container">
+                    <!-- Left: Form -->
+                    <div class="config-form">
+                        <!-- Industry Selection -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i data-lucide="building-2"></i>
+                                <h3>Industry</h3>
+                            </div>
+                            <p class="section-desc">Select your industry for compliance-aware recommendations</p>
+                            <div id="industry-options" class="options-grid"></div>
+                        </div>
+
+                        <!-- Use Case Selection -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i data-lucide="target"></i>
+                                <h3>Primary Use Case</h3>
+                            </div>
+                            <p class="section-desc">What will your SLM primarily be used for?</p>
+                            <div id="useCase-options" class="options-grid"></div>
+                        </div>
+
+                        <!-- Technical Requirements -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i data-lucide="settings-2"></i>
+                                <h3>Technical Requirements</h3>
+                            </div>
+                            <div class="requirements-row">
+                                <div class="req-group">
+                                    <label><i data-lucide="activity"></i> Expected Volume</label>
+                                    <div id="volume-options" class="options-list"></div>
+                                </div>
+                                <div class="req-group">
+                                    <label><i data-lucide="zap"></i> Latency Requirement</label>
+                                    <div id="latency-options" class="options-list"></div>
+                                </div>
+                            </div>
+                            <div class="requirements-row">
+                                <div class="req-group">
+                                    <label><i data-lucide="shield-check"></i> Compliance</label>
+                                    <div id="compliance-options" class="options-list"></div>
+                                </div>
+                                <div class="req-group">
+                                    <label><i data-lucide="wallet"></i> Monthly Budget</label>
+                                    <div id="budget-options" class="options-list"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generate Button -->
+                        <div class="form-actions">
+                            <button id="generate-recommendation" class="btn-generate" disabled>
+                                <i data-lucide="sparkles"></i>
+                                Generate Recommendation
+                            </button>
+                            <button id="reset-form" class="btn-reset">
+                                <i data-lucide="rotate-ccw"></i>
+                                Reset
+                            </button>
+                        </div>
+
+                        <!-- Progress Indicator -->
+                        <div class="form-progress">
+                            <div class="progress-bar">
+                                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span id="progress-text" class="progress-text">0 of 6 selected</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Results -->
+                    <div class="config-results">
+                        <div id="recommendation-result" class="result-placeholder">
+                            <div class="placeholder-content">
+                                <i data-lucide="layout-dashboard" class="placeholder-icon"></i>
+                                <h4>Your Recommendation</h4>
+                                <p>Complete the configuration on the left to receive your personalized infrastructure stack</p>
+                                <div class="placeholder-features">
+                                    <div class="feature"><i data-lucide="check-circle"></i> Optimal Model Selection</div>
+                                    <div class="feature"><i data-lucide="check-circle"></i> GPU & Instance Sizing</div>
+                                    <div class="feature"><i data-lucide="check-circle"></i> Platform Recommendation</div>
+                                    <div class="feature"><i data-lucide="check-circle"></i> Cost Projection</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -148,8 +157,787 @@
             </div>
         </main>
     </div>
-    
+
+    <style>
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #146eb4 0%, #0d5a96 50%, #1a365d 100%);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 8px 32px rgba(20, 110, 180, 0.3);
+        }
+        .hero-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .hero-lucide {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+            stroke-width: 1.5;
+        }
+        .hero-content { flex: 1; }
+        .hero-content h2 { margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 700; }
+        .hero-content p { margin: 0; opacity: 0.9; font-size: 0.95rem; }
+        .hero-stats { display: flex; gap: 2rem; }
+        .hero-stat {
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .stat-number { display: block; font-size: 1.75rem; font-weight: 700; font-family: 'Outfit', sans-serif; }
+        .stat-text { display: block; font-size: 0.8rem; opacity: 0.8; }
+
+        /* Configuration Container */
+        .config-container {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Form Sections */
+        .config-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            border: 1px solid #e8eaed;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-header i {
+            width: 22px;
+            height: 22px;
+            color: #146eb4;
+        }
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        .section-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0 0 1rem 0;
+        }
+
+        /* Options Grid (Industry, Use Case) */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        .option-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .option-card:hover {
+            background: #f0f7ff;
+            border-color: #4daae8;
+            transform: translateY(-2px);
+        }
+        .option-card.selected {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f7ff 100%);
+            border-color: #146eb4;
+            box-shadow: 0 4px 12px rgba(20, 110, 180, 0.15);
+        }
+        .option-card .card-icon {
+            width: 36px;
+            height: 36px;
+            color: #146eb4;
+        }
+        .option-card.selected .card-icon { color: #0d5a96; }
+        .option-card .card-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        /* Requirements Row */
+        .requirements-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .requirements-row:last-child { margin-bottom: 0; }
+        .req-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.75rem;
+        }
+        .req-group label i {
+            width: 16px;
+            height: 16px;
+            color: #146eb4;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        .option-btn:hover {
+            background: #f0f7ff;
+            border-color: #4daae8;
+        }
+        .option-btn.selected {
+            background: #e3f2fd;
+            border-color: #146eb4;
+            color: #0d5a96;
+            font-weight: 500;
+        }
+        .option-btn .option-icon { display: none; }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-generate {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #146eb4 0%, #0d5a96 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 16px rgba(20, 110, 180, 0.3);
+        }
+        .btn-generate:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 110, 180, 0.4);
+        }
+        .btn-generate:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .btn-generate i, .btn-reset i {
+            width: 20px;
+            height: 20px;
+        }
+        .btn-reset {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-reset:hover {
+            border-color: #ccc;
+            color: #333;
+        }
+
+        /* Progress Bar */
+        .form-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #146eb4 0%, #28a745 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            font-size: 0.85rem;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        /* Results Panel */
+        .config-results {
+            position: sticky;
+            top: 100px;
+        }
+        .result-placeholder {
+            background: white;
+            border-radius: 16px;
+            border: 2px dashed #e0e0e0;
+            padding: 2rem;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .placeholder-content {
+            text-align: center;
+            color: #666;
+        }
+        .placeholder-icon {
+            width: 64px;
+            height: 64px;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+        .placeholder-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+            font-size: 1.25rem;
+        }
+        .placeholder-content p {
+            margin: 0 0 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .placeholder-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .feature i {
+            width: 16px;
+            height: 16px;
+            color: #28a745;
+        }
+
+        /* Recommendation Card */
+        .recommendation-card {
+            background: white;
+            border-radius: 16px;
+            border: 2px solid #146eb4;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(20, 110, 180, 0.15);
+        }
+        .recommendation-header {
+            background: linear-gradient(135deg, #146eb4 0%, #0d5a96 100%);
+            padding: 1.5rem;
+            color: white;
+        }
+        .recommendation-title {
+            margin: 0 0 0.25rem 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .recommendation-subtitle {
+            margin: 0;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .recommendation-body {
+            padding: 1.5rem;
+        }
+        .rec-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+        .rec-item:last-child { margin-bottom: 0; }
+        .rec-item-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f7ff 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .rec-item-content { flex: 1; }
+        .rec-item-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .rec-item-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0.25rem 0;
+        }
+        .rec-item-detail {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .cost-comparison-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, #fff8e1 0%, #fffde7 100%);
+            border-top: 1px solid #ffe082;
+        }
+        .cost-label { font-size: 0.8rem; color: #856404; margin-bottom: 0.25rem; }
+        .cost-monthly { font-size: 1.75rem; font-weight: 700; color: #856404; font-family: 'Outfit', sans-serif; }
+        .cost-savings { font-size: 1.25rem; font-weight: 700; color: #28a745; }
+        .text-right { text-align: right; }
+        .live-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+        }
+        .live-metric { text-align: center; }
+        .live-metric-value { font-size: 1.25rem; font-weight: 700; color: #146eb4; font-family: 'JetBrains Mono', monospace; }
+        .live-metric-label { font-size: 0.75rem; color: #666; }
+        .btn { 
+            padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; 
+            cursor: pointer; transition: all 0.2s; display: inline-flex; 
+            align-items: center; gap: 0.5rem; font-size: 0.9rem; 
+        }
+        .btn-primary { 
+            background: linear-gradient(135deg, #146eb4 0%, #0d5a96 100%); 
+            color: white; border: none; 
+            box-shadow: 0 4px 14px rgba(20, 110, 180, 0.25);
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #1a7ec9 0%, #0f6aa8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(20, 110, 180, 0.35);
+        }
+        .btn-outline { 
+            background: white; color: #146eb4; 
+            border: 2px solid #146eb4; 
+        }
+        .btn-outline:hover { 
+            background: rgba(20, 110, 180, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Animation */
+        .animate-fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
     <script src="../js/main.js"></script>
-    <script src="../js/infra-recommender.js"></script>
+    <script>
+    /* ============================================
+       Infrastructure Recommender - Complete Module
+       ============================================ */
+    const InfraRecommender = {
+        icons: {
+            'healthcare': 'heart-pulse',
+            'financial': 'landmark',
+            'retail': 'shopping-cart',
+            'legal': 'scale',
+            'customer-service': 'headphones',
+            'general': 'briefcase',
+            'chatbot': 'message-circle',
+            'rag': 'file-search',
+            'code': 'code-2',
+            'summarization': 'file-text',
+            'classification': 'tags',
+            'extraction': 'scan-search'
+        },
+        
+        options: {
+            industries: [
+                { id: 'healthcare', name: 'Healthcare' },
+                { id: 'financial', name: 'Financial' },
+                { id: 'retail', name: 'Retail' },
+                { id: 'legal', name: 'Legal' },
+                { id: 'customer-service', name: 'Support' },
+                { id: 'general', name: 'General' }
+            ],
+            useCases: [
+                { id: 'chatbot', name: 'Chatbot' },
+                { id: 'rag', name: 'RAG/Q&A' },
+                { id: 'code', name: 'Code Gen' },
+                { id: 'summarization', name: 'Summarize' },
+                { id: 'classification', name: 'Classify' },
+                { id: 'extraction', name: 'Extract' }
+            ],
+            volumes: [
+                { id: 'low', name: '< 10K/day', queries: 5000 },
+                { id: 'medium', name: '10K-100K/day', queries: 50000 },
+                { id: 'high', name: '100K-1M/day', queries: 500000 },
+                { id: 'enterprise', name: '1M+/day', queries: 2000000 }
+            ],
+            latencyReqs: [
+                { id: 'realtime', name: '< 100ms', ms: 100 },
+                { id: 'interactive', name: '< 500ms', ms: 500 },
+                { id: 'standard', name: '< 2s', ms: 2000 },
+                { id: 'batch', name: 'Batch OK', ms: 30000 }
+            ],
+            compliance: [
+                { id: 'hipaa', name: 'HIPAA' },
+                { id: 'soc2', name: 'SOC 2' },
+                { id: 'gdpr', name: 'GDPR' },
+                { id: 'pci', name: 'PCI-DSS' },
+                { id: 'none', name: 'None' }
+            ],
+            budgets: [
+                { id: 'startup', name: '< $2K/mo', max: 2000 },
+                { id: 'growth', name: '$2K-10K/mo', max: 10000 },
+                { id: 'enterprise', name: '$10K-50K/mo', max: 50000 },
+                { id: 'unlimited', name: '$50K+/mo', max: 100000 }
+            ]
+        },
+        
+        models: [
+            { id: 'mistral-7b', name: 'Mistral 7B', params: '7B', vram: 14, strengths: ['rag', 'chatbot', 'general'], quality: 8.5 },
+            { id: 'phi-3-mini', name: 'Phi-3.5 Mini', params: '3.8B', vram: 8, strengths: ['code', 'extraction', 'classification'], quality: 8.2 },
+            { id: 'llama-3.2-3b', name: 'Llama 3.2 3B', params: '3B', vram: 6, strengths: ['chatbot', 'summarization', 'classification'], quality: 7.8 },
+            { id: 'qwen-2.5-7b', name: 'Qwen 2.5 7B', params: '7B', vram: 14, strengths: ['code', 'rag', 'summarization'], quality: 8.4 },
+            { id: 'gemma-2-9b', name: 'Gemma 2 9B', params: '9B', vram: 18, strengths: ['chatbot', 'rag', 'general'], quality: 8.3 }
+        ],
+        
+        gpus: [
+            { id: 'a10g', name: 'NVIDIA A10G', vram: 24, costHr: 1.21, instance: 'g5.2xlarge', provider: 'AWS', throughput: 50 },
+            { id: 't4', name: 'NVIDIA T4', vram: 16, costHr: 0.53, instance: 'g4dn.xlarge', provider: 'AWS', throughput: 25 },
+            { id: 'l4', name: 'NVIDIA L4', vram: 24, costHr: 0.84, instance: 'g2-standard-4', provider: 'GCP', throughput: 55 },
+            { id: 'a100-40', name: 'NVIDIA A100', vram: 40, costHr: 3.67, instance: 'p4d.24xlarge', provider: 'AWS', throughput: 120 },
+            { id: 'inf2', name: 'Inferentia2', vram: 32, costHr: 0.76, instance: 'inf2.xlarge', provider: 'AWS', throughput: 60 }
+        ],
+        
+        platforms: [
+            { id: 'ec2', name: 'Amazon EC2', complexity: 'Low', scaling: 'Manual', bestFor: 'Simple, cost-effective' },
+            { id: 'sagemaker', name: 'SageMaker', complexity: 'Low', scaling: 'Auto', bestFor: 'Managed MLOps' },
+            { id: 'eks', name: 'Amazon EKS', complexity: 'High', scaling: 'Advanced', bestFor: 'Multi-model, K8s' },
+            { id: 'gke', name: 'Google GKE', complexity: 'High', scaling: 'Advanced', bestFor: 'Multi-cloud' }
+        ],
+        
+        selections: { industry: null, useCase: null, volume: null, latency: null, compliance: [], budget: null },
+        state: { recommendation: null },
+        
+        init() {
+            this.renderIndustryOptions();
+            this.renderUseCaseOptions();
+            this.renderListOptions('volume', 'volumes');
+            this.renderListOptions('latency', 'latencyReqs');
+            this.renderComplianceOptions();
+            this.renderListOptions('budget', 'budgets');
+            this.bindEvents();
+            this.updateProgress();
+            lucide.createIcons();
+        },
+        
+        renderIndustryOptions() {
+            const container = document.getElementById('industry-options');
+            if (!container) return;
+            container.innerHTML = this.options.industries.map(opt => `
+                <div class="option-card" data-selection="industry" data-value="${opt.id}">
+                    <i data-lucide="${this.icons[opt.id]}" class="card-icon"></i>
+                    <span class="card-name">${opt.name}</span>
+                </div>
+            `).join('');
+        },
+        
+        renderUseCaseOptions() {
+            const container = document.getElementById('useCase-options');
+            if (!container) return;
+            container.innerHTML = this.options.useCases.map(opt => `
+                <div class="option-card" data-selection="useCase" data-value="${opt.id}">
+                    <i data-lucide="${this.icons[opt.id]}" class="card-icon"></i>
+                    <span class="card-name">${opt.name}</span>
+                </div>
+            `).join('');
+        },
+        
+        renderListOptions(key, optionsKey) {
+            const container = document.getElementById(`${key}-options`);
+            if (!container) return;
+            container.innerHTML = this.options[optionsKey].map(opt => `
+                <button class="option-btn" data-selection="${key}" data-value="${opt.id}">${opt.name}</button>
+            `).join('');
+        },
+        
+        renderComplianceOptions() {
+            const container = document.getElementById('compliance-options');
+            if (!container) return;
+            container.innerHTML = this.options.compliance.map(opt => `
+                <button class="option-btn" data-selection="compliance" data-value="${opt.id}">${opt.name}</button>
+            `).join('');
+        },
+        
+        bindEvents() {
+            document.querySelectorAll('.option-card, .option-btn').forEach(el => {
+                el.addEventListener('click', () => {
+                    const key = el.dataset.selection;
+                    const value = el.dataset.value;
+                    this.handleSelection(key, value, el);
+                });
+            });
+            
+            document.getElementById('generate-recommendation')?.addEventListener('click', () => this.generateRecommendation());
+            document.getElementById('reset-form')?.addEventListener('click', () => this.resetForm());
+        },
+        
+        handleSelection(key, value, el) {
+            if (key === 'compliance') {
+                if (value === 'none') {
+                    this.selections.compliance = ['none'];
+                    document.querySelectorAll('[data-selection="compliance"]').forEach(b => b.classList.remove('selected'));
+                    el.classList.add('selected');
+                } else {
+                    this.selections.compliance = this.selections.compliance.filter(c => c !== 'none');
+                    const idx = this.selections.compliance.indexOf(value);
+                    if (idx > -1) { this.selections.compliance.splice(idx, 1); el.classList.remove('selected'); }
+                    else { this.selections.compliance.push(value); el.classList.add('selected'); }
+                    document.querySelector('[data-selection="compliance"][data-value="none"]')?.classList.remove('selected');
+                }
+            } else {
+                this.selections[key] = value;
+                document.querySelectorAll(`[data-selection="${key}"]`).forEach(b => b.classList.remove('selected'));
+                el.classList.add('selected');
+            }
+            this.updateProgress();
+            lucide.createIcons();
+        },
+        
+        updateProgress() {
+            let count = 0;
+            if (this.selections.industry) count++;
+            if (this.selections.useCase) count++;
+            if (this.selections.volume) count++;
+            if (this.selections.latency) count++;
+            if (this.selections.compliance.length > 0) count++;
+            if (this.selections.budget) count++;
+            
+            const pct = (count / 6) * 100;
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('progress-text').textContent = `${count} of 6 selected`;
+            document.getElementById('generate-recommendation').disabled = count < 4;
+        },
+        
+        generateRecommendation() {
+            const { industry, useCase, volume, latency, compliance, budget } = this.selections;
+            if (!useCase || !volume) { Toast?.warning?.('Please select use case and volume'); return; }
+            
+            // Find best model
+            let model = this.models.find(m => m.strengths.includes(useCase)) || this.models[0];
+            
+            // Find GPU based on model VRAM and budget
+            const budgetData = this.options.budgets.find(b => b.id === budget) || { max: 10000 };
+            let gpu = this.gpus.find(g => g.vram >= model.vram && (g.costHr * 730) <= budgetData.max) || this.gpus[0];
+            
+            // Platform selection
+            const volumeData = this.options.volumes.find(v => v.id === volume) || { queries: 50000 };
+            let platform;
+            if (volume === 'enterprise' || compliance.includes('hipaa') || compliance.includes('pci')) {
+                platform = this.platforms.find(p => p.id === 'eks');
+            } else if (volume === 'high') {
+                platform = this.platforms.find(p => p.id === 'sagemaker');
+            } else {
+                platform = this.platforms.find(p => p.id === 'ec2');
+            }
+            
+            // Calculate costs
+            const instances = Math.max(1, Math.ceil(volumeData.queries / (gpu.throughput * 3600 * 24)));
+            const monthlyCost = gpu.costHr * 730 * instances;
+            const costPerQuery = monthlyCost / (volumeData.queries * 30);
+            const savingsPercent = Math.round(((0.03 - costPerQuery) / 0.03) * 100);
+            
+            this.state.recommendation = { model, gpu, platform, instances, monthlyCost, savingsPercent, throughput: gpu.throughput * instances, latencyMs: Math.round(1000 / gpu.throughput), costPerQuery };
+            this.renderRecommendation();
+        },
+        
+        renderRecommendation() {
+            const rec = this.state.recommendation;
+            const container = document.getElementById('recommendation-result');
+            if (!container || !rec) return;
+            
+            container.innerHTML = `
+                <div class="recommendation-card animate-fade-in">
+                    <div class="recommendation-header">
+                        <h3 class="recommendation-title">✨ Your Recommended Stack</h3>
+                        <p class="recommendation-subtitle">Optimized for ${this.selections.industry || 'your'} ${this.selections.useCase} workload</p>
+                    </div>
+                    <div class="recommendation-body">
+                        <div class="rec-item">
+                            <div class="rec-item-icon">🤖</div>
+                            <div class="rec-item-content">
+                                <div class="rec-item-label">Model</div>
+                                <div class="rec-item-value">${rec.model.name}</div>
+                                <div class="rec-item-detail">${rec.model.params} params • Quality: ${rec.model.quality}/10</div>
+                            </div>
+                        </div>
+                        <div class="rec-item">
+                            <div class="rec-item-icon">⚡</div>
+                            <div class="rec-item-content">
+                                <div class="rec-item-label">GPU / Instance</div>
+                                <div class="rec-item-value">${rec.gpu.name}</div>
+                                <div class="rec-item-detail">${rec.gpu.instance} • ${rec.gpu.vram}GB VRAM • $${rec.gpu.costHr}/hr</div>
+                            </div>
+                        </div>
+                        <div class="rec-item">
+                            <div class="rec-item-icon">☁️</div>
+                            <div class="rec-item-content">
+                                <div class="rec-item-label">Platform</div>
+                                <div class="rec-item-value">${rec.platform.name}</div>
+                                <div class="rec-item-detail">${rec.platform.bestFor} • ${rec.platform.scaling} scaling</div>
+                            </div>
+                        </div>
+                        <div class="rec-item">
+                            <div class="rec-item-icon">📊</div>
+                            <div class="rec-item-content">
+                                <div class="rec-item-label">Scale</div>
+                                <div class="rec-item-value">${rec.instances} Instance${rec.instances > 1 ? 's' : ''}</div>
+                                <div class="rec-item-detail">${rec.throughput} queries/sec capacity</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cost-comparison-row">
+                        <div>
+                            <div class="cost-label">Estimated Monthly Cost</div>
+                            <div class="cost-monthly">$${Math.round(rec.monthlyCost).toLocaleString()}/mo</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="cost-label">vs GPT-4 API</div>
+                            <div class="cost-savings">Save ${rec.savingsPercent}%</div>
+                        </div>
+                    </div>
+                    <div class="live-metrics">
+                        <div class="live-metric">
+                            <div class="live-metric-value">${rec.latencyMs}ms</div>
+                            <div class="live-metric-label">Latency</div>
+                        </div>
+                        <div class="live-metric">
+                            <div class="live-metric-value">${rec.throughput}</div>
+                            <div class="live-metric-label">QPS</div>
+                        </div>
+                        <div class="live-metric">
+                            <div class="live-metric-value">$${(rec.costPerQuery * 1000).toFixed(3)}</div>
+                            <div class="live-metric-label">Per 1K Queries</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem 1.5rem; display: flex; gap: 0.75rem;">
+                        <button class="btn btn-primary" onclick="InfraRecommender.exportConfig()">📥 Export Config</button>
+                        <button class="btn btn-outline" onclick="Toast?.info?.('Contact sales@shellkode.com')">📅 Book Consult</button>
+                    </div>
+                </div>
+            `;
+        },
+        
+        exportConfig() {
+            if (!this.state.recommendation) return;
+            const config = {
+                timestamp: new Date().toISOString(),
+                inputs: this.selections,
+                recommendation: {
+                    model: this.state.recommendation.model.name,
+                    gpu: this.state.recommendation.gpu.name,
+                    instance: this.state.recommendation.gpu.instance,
+                    platform: this.state.recommendation.platform.name,
+                    instances: this.state.recommendation.instances,
+                    monthly_cost: Math.round(this.state.recommendation.monthlyCost),
+                    savings_vs_gpt4: this.state.recommendation.savingsPercent + '%'
+                }
+            };
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `slm-infra-recommendation-${Date.now()}.json`;
+            a.click();
+            Toast?.success?.('Configuration exported!');
+        },
+        
+        resetForm() {
+            this.selections = { industry: null, useCase: null, volume: null, latency: null, compliance: [], budget: null };
+            this.state.recommendation = null;
+            document.querySelectorAll('.option-card, .option-btn').forEach(el => el.classList.remove('selected'));
+            this.updateProgress();
+            document.getElementById('recommendation-result').innerHTML = `
+                <div class="placeholder-content">
+                    <i data-lucide="layout-dashboard" class="placeholder-icon"></i>
+                    <h4>Your Recommendation</h4>
+                    <p>Complete the configuration to receive your personalized infrastructure stack</p>
+                    <div class="placeholder-features">
+                        <div class="feature"><i data-lucide="check-circle"></i> Optimal Model Selection</div>
+                        <div class="feature"><i data-lucide="check-circle"></i> GPU & Instance Sizing</div>
+                        <div class="feature"><i data-lucide="check-circle"></i> Platform Recommendation</div>
+                        <div class="feature"><i data-lucide="check-circle"></i> Cost Projection</div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => InfraRecommender.init());
+    window.InfraRecommender = InfraRecommender;
+    </script>
 </body>
 </html>
